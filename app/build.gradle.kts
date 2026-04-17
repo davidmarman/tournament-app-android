@@ -37,6 +37,12 @@ android {
 
 dependencies {
 
+    // Retrofit para peticiones a la API
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // Converridor de JSON a Objetos Java
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
