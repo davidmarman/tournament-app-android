@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFr"
+        android:icon="@drawable/ic_home"
+        android:title="Inicio" />
+    <item
+        android:id="@+id/equipoFr"
+        android:icon="@drawable/ic_team"
+        android:title="Equipo" />
+    <item
+        android:id="@+id/torneosFr"
+        android:icon="@drawable/ic_tournament"
+        android:title="Torneos" />
+    <item
+        android:id="@+id/perfilFr"
+        android:icon="@drawable/ic_person"
+        android:title="Perfil" />
+</menu>
