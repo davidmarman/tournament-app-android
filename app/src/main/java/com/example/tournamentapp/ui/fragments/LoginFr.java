@@ -56,6 +56,10 @@ public class LoginFr extends Fragment {
             // Le pasamos el trabajo al ViewModel
             viewModel.realizarLogin(email, password);
         });
+
+        binding.btnRegister.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_loginFr_to_registerFr);
+        });
     }
 
     private void setupObservers() {

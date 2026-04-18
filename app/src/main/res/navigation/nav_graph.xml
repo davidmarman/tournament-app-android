@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_loginFr_to_homeFr"
             app:destination="@id/homeFr" />
+        <action
+            android:id="@+id/action_loginFr_to_registerFr"
+            app:destination="@id/registerFr" />
     </fragment>
     <fragment
         android:id="@+id/homeFr"
         android:name="com.example.tournamentapp.ui.fragments.HomeFr"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/registerFr"
+        android:name="com.example.tournamentapp.ui.fragments.RegisterFr"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
 </navigation>
