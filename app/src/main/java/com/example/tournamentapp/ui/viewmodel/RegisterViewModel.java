@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.tournamentapp.data.repository.RegisterRepository;
 
+import java.io.File;
+
 public class RegisterViewModel extends AndroidViewModel {
     private RegisterRepository repository;
 
@@ -28,7 +30,7 @@ public class RegisterViewModel extends AndroidViewModel {
         return errorMessage;
     }
 
-    public void realizarRegistro(String nombre, String apellido, String username, String email, String password, String rol) {
+    public void realizarRegistro(String nombre, String apellido, String username, String email, String password, String rol, File imagen) {
         // Validación básica
         if (nombre.isEmpty() || email.isEmpty() || password.isEmpty() || rol.isEmpty()) {
             errorMessage.setValue("Por favor, rellena todos los campos");
@@ -40,6 +42,6 @@ public class RegisterViewModel extends AndroidViewModel {
             return;
         }
 
-        repository.register(nombre, apellido, username, email, password, rol, registerSuccess, errorMessage);
+        repository.register(nombre, apellido, username, email, password, rol, imagen, registerSuccess, errorMessage);
     }
 }

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="32dp">
@@ -13,6 +14,24 @@
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="32dp" />
+
+    <ImageView
+        android:id="@+id/ivProfilePic"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="24dp"
+        android:background="#E0E0E0"
+        android:scaleType="centerCrop"
+        android:src="@android:drawable/ic_menu_camera"
+        app:cardCornerRadius="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Toca para subir foto"
+        android:textSize="12sp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="24dp"/>
 
     <EditText
         android:id="@+id/etNombre"

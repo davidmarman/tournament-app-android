@@ -1,7 +1,10 @@
 package com.example.tournamentapp.ui.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,14 +17,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.tournamentapp.R;
+import com.example.tournamentapp.data.utils.FileUtil;
 import com.example.tournamentapp.databinding.FragmentRegisterBinding;
 import com.example.tournamentapp.ui.viewmodel.RegisterViewModel;
+
+import java.io.File;
 
 
 public class RegisterFr extends Fragment {
 
     private FragmentRegisterBinding binding;
     private RegisterViewModel viewModel;
+    private Uri selectedImageUri = null;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +47,7 @@ public class RegisterFr extends Fragment {
     }
 
     private void setupClickListeners() {
+        binding.ivProfilePic.setOnClickListener(v -> mGetContent.launch("image/*"));
         binding.btnRegister.setOnClickListener(v -> {
             String nombre = binding.etNombre.getText().toString().trim();
             String apellido = binding.etApellido.getText().toString().trim();
@@ -50,10 +58,16 @@ public class RegisterFr extends Fragment {
             // Determinar el rol según el RadioButton seleccionado
             String rol = binding.rbAdmin.isChecked() ? "Admin" : "User";
 
+            // Convertimos la Uri en un File
+            File imageFile = null;
+            if(selectedImageUri != null){
+                imageFile = FileUtil.getFileFromUri(requireContext(), selectedImageUri);
+            }
+
             binding.progressBar.setVisibility(View.VISIBLE);
             binding.btnRegister.setEnabled(false);
 
-            viewModel.realizarRegistro(nombre, apellido, username, email, password, rol);
+            viewModel.realizarRegistro(nombre, apellido, username, email, password, rol, imageFile);
         });
     }
 
@@ -75,6 +89,16 @@ public class RegisterFr extends Fragment {
             Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show();
         });
     }
+
+    // El "lanzador" de la galería
+    private final ActivityResultLauncher<String> mGetContent = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri -> {
+                if (uri != null) {
+                    selectedImageUri = uri;
+                    binding.ivProfilePic.setImageURI(uri); // Mostramos la foto elegida en pantalla
+                }
+            });
 
     @Override
     public void onDestroyView() {
