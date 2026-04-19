@@ -1,8 +1,11 @@
 package com.example.tournamentapp.data.network;
 
+import com.example.tournamentapp.data.model.EquipoDetalleResponse;
+import com.example.tournamentapp.data.model.EquipoResponse;
 import com.example.tournamentapp.data.model.LoginRequest;
 import com.example.tournamentapp.data.model.LoginResponse;
 import com.example.tournamentapp.data.model.Partido;
+import com.example.tournamentapp.data.model.PerfilResponse;
 import com.example.tournamentapp.data.model.RegisterRequest;
 import com.example.tournamentapp.data.model.RegisterResponse;
 
@@ -17,6 +20,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
@@ -40,4 +44,17 @@ public interface ApiService {
     // Obtener lista de proximos partidos
     @GET("partidos/mis-proximos")
     Call<List<Partido>> getMisPartidos(@Header("Authorization") String token);
+
+    @GET("usuario/perfil")
+    Call<PerfilResponse> getPerfil(@Header("Authorization") String token);
+
+    @GET("equipos/mis-equipos")
+    Call<List<EquipoResponse>> getMisEquipos(@Header("Authorization") String token);
+
+    @GET("equipos/{id}")
+    Call<EquipoDetalleResponse> getDetalleEquipo(
+            @Header("Authorization") String token,
+            @Path("id") int equipoId
+    );
+
 }

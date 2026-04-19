@@ -7,22 +7,21 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#F5F5F5"
-    tools:context=".ui.fragments.HomeFr"
-    android:id="@+id/homeFr">
+    tools:context=".ui.fragments.EquiposFr">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Próximos Partidos"
+        android:text="Mis Equipos"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPartidos"
+        android:id="@+id/rvEquipos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/item_partido" />
+        tools:listitem="@layout/item_equipo_grid" />
 
 </LinearLayout>

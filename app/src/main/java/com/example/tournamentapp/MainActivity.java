@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -41,5 +42,31 @@ public class MainActivity extends AppCompatActivity {
                 binding.bottomNavigation.setVisibility(View.VISIBLE);
             }
         });
+        // INTERCEPTOR DEL BOTÓN ATRÁS
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Miramos en qué pantalla estamos actualmente
+                int currentId = navController.getCurrentDestination().getId();
+
+                // Si estamos en CUALQUIERA de las 4 pestañas principales...
+                if (currentId == R.id.homeFr || currentId == R.id.equipoFr ||
+                        currentId == R.id.torneosFr || currentId == R.id.perfilFr) {
+
+                    finish(); // ¡Salimos de la aplicación de inmediato!
+
+                } else {
+                    // Si estamos en un sub-menú, apagamos nuestro interceptor un segundo,
+                    // dejamos que Android vuelva a la pantalla anterior, y lo volvemos a encender.
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                    setEnabled(true);
+                }
+            }
+        };
+
+        // Añadimos el interceptor a la actividad
+        getOnBackPressedDispatcher().addCallback(this,callback);
     }
+
 }

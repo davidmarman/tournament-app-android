@@ -5,6 +5,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFr">
 
+    <action
+        android:id="@+id/action_global_loginFr"
+        app:destination="@id/loginFr"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/loginFr"
         android:name="com.example.tournamentapp.ui.fragments.LoginFr"
@@ -12,7 +18,9 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFr_to_homeFr"
-            app:destination="@id/homeFr" />
+            app:destination="@id/homeFr"
+            app:popUpTo="@id/loginFr"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_loginFr_to_registerFr"
             app:destination="@id/registerFr" />
@@ -27,4 +35,23 @@
         android:name="com.example.tournamentapp.ui.fragments.RegisterFr"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/perfilFr"
+        android:name="com.example.tournamentapp.ui.fragments.PerfilFr"
+        android:label="fragment_perfil"
+        tools:layout="@layout/fragment_perfil" />
+    <fragment
+        android:id="@+id/equipoFr"
+        android:name="com.example.tournamentapp.ui.fragments.EquiposFr"
+        android:label="fragment_equipos"
+        tools:layout="@layout/fragment_equipos" >
+        <action
+            android:id="@+id/action_equipoFr_to_equipoDetalleFr"
+            app:destination="@id/equipoDetalleFr" />
+    </fragment>
+    <fragment
+        android:id="@+id/equipoDetalleFr"
+        android:name="com.example.tournamentapp.ui.fragments.EquipoDetalleFr"
+        android:label="fragment_equipo_detalle"
+        tools:layout="@layout/fragment_equipo_detalle" />
 </navigation>
