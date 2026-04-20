@@ -54,4 +54,14 @@
         android:name="com.example.tournamentapp.ui.fragments.EquipoDetalleFr"
         android:label="fragment_equipo_detalle"
         tools:layout="@layout/fragment_equipo_detalle" />
+    <fragment
+        android:id="@+id/crearEquipoDialog"
+        android:name="com.example.tournamentapp.ui.dialogs.CrearEquipoDialog"
+        android:label="dialog_crear_equipo"
+        tools:layout="@layout/dialog_crear_equipo" />
+    <fragment
+        android:id="@+id/anadirJugadorDialog"
+        android:name="com.example.tournamentapp.ui.dialogs.AnadirJugadorDialog"
+        android:label="dialog_anadir_jugador"
+        tools:layout="@layout/dialog_anadir_jugador" />
 </navigation>

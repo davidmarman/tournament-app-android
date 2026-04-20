@@ -9,6 +9,7 @@ public class EquipoDetalleResponse {
     public boolean es_capitan;
     public ProximoPartido proximo_partido;
     public List<ItemSimple> torneos;
+    public List<ItemSimple> jugadores;
     public List<String> palmares;
 
     public static class ProximoPartido {

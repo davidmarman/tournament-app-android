@@ -18,6 +18,7 @@ import com.example.tournamentapp.R;
 import com.example.tournamentapp.data.model.EquipoResponse;
 import com.example.tournamentapp.databinding.FragmentEquiposBinding;
 import com.example.tournamentapp.ui.adapter.EquiposAdapter;
+import com.example.tournamentapp.ui.dialogs.CrearEquipoDialog;
 import com.example.tournamentapp.ui.viewmodel.EquiposViewModel;
 
 import java.util.ArrayList;
@@ -64,6 +65,12 @@ public class EquiposFr extends Fragment implements EquiposAdapter.OnEquipoClickL
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), error -> {
             Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
         });
+
+        viewModel.getEquipoCreado().observe(getViewLifecycleOwner(), creado -> {
+            if (creado){
+                Toast.makeText(getContext(), "Equipo creado con exito", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // --- MANEJO DE CLICKS (Vienen de la interfaz del Adapter) ---
@@ -79,8 +86,17 @@ public class EquiposFr extends Fragment implements EquiposAdapter.OnEquipoClickL
 
     @Override
     public void onCrearEquipoClick() {
-        // TODO: Mostrar diálogo o pantalla para crear un equipo nuevo
-        Toast.makeText(getContext(), "Vamos a crear un equipo nuevo", Toast.LENGTH_SHORT).show();
+        // Instanciamos el diálogo
+        CrearEquipoDialog dialog = new CrearEquipoDialog();
+
+        // Le decimos qué hacer cuando el usuario pulse el botón "Crear" del pop-up
+        dialog.setListener((nombreEquipo, imagenUri) -> {
+            // Le pasamos los datos al ViewModel para que haga la magia de red
+            viewModel.crearNuevoEquipo(nombreEquipo, imagenUri);
+        });
+
+        // Mostramos el diálogo en pantalla
+        dialog.show(getParentFragmentManager(), "CrearEquipoDialog");
     }
 
     @Override

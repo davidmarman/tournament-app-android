@@ -10,6 +10,7 @@ import com.example.tournamentapp.data.model.RegisterRequest;
 import com.example.tournamentapp.data.model.RegisterResponse;
 
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -24,6 +25,7 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
+    // Ruta para realizar Login
     @POST("auth/login")
     Call<LoginResponse> login(@Body LoginRequest request);
 
@@ -45,16 +47,37 @@ public interface ApiService {
     @GET("partidos/mis-proximos")
     Call<List<Partido>> getMisPartidos(@Header("Authorization") String token);
 
+    // Ruta para obtener informacion del usuario
     @GET("usuario/perfil")
     Call<PerfilResponse> getPerfil(@Header("Authorization") String token);
 
+    // Ruta para obtener los equipos del usuario
     @GET("equipos/mis-equipos")
     Call<List<EquipoResponse>> getMisEquipos(@Header("Authorization") String token);
 
+    // Ruta para obtener el detalle de un equipo
     @GET("equipos/{id}")
     Call<EquipoDetalleResponse> getDetalleEquipo(
             @Header("Authorization") String token,
             @Path("id") int equipoId
+    );
+
+
+    // Ruta para crear un equipo
+    @Multipart
+    @POST("equipos/crear")
+    Call<EquipoResponse> crearEquipo(
+            @Header("Authorization") String token,
+            @Part("nombre") RequestBody nombre,
+            @Part MultipartBody.Part logo // La imagen (puede ser nula)
+    );
+
+    // Ruta para añadir un jugador a un equipo
+    @POST("equipos/{id}/anadir-jugador")
+    Call<Map<String, String>> anadirJugador(
+            @Header("Authorization") String token,
+            @Path("id") int equipoId,
+            @Body Map<String, String> body // Enviamos {"username": "valor"}
     );
 
 }
