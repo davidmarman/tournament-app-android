@@ -64,4 +64,23 @@
         android:name="com.example.tournamentapp.ui.dialogs.AnadirJugadorDialog"
         android:label="dialog_anadir_jugador"
         tools:layout="@layout/dialog_anadir_jugador" />
+    <fragment
+        android:id="@+id/inscribirTorneoDialog"
+        android:name="com.example.tournamentapp.ui.dialogs.InscribirTorneoDialog"
+        android:label="dialog_inscribir_torneo"
+        tools:layout="@layout/dialog_inscribir_torneo" />
+    <fragment
+        android:id="@+id/torneosFr"
+        android:name="com.example.tournamentapp.ui.fragments.TorneosFr"
+        android:label="fragment_torneos"
+        tools:layout="@layout/fragment_torneos" >
+        <action
+            android:id="@+id/action_torneosFr_to_torneoDetalleFr"
+            app:destination="@id/torneoDetalleFr" />
+    </fragment>
+    <fragment
+        android:id="@+id/torneoDetalleFr"
+        android:name="com.example.tournamentapp.ui.fragments.TorneoDetalleFr"
+        android:label="fragment_torneo_detalle"
+        tools:layout="@layout/fragment_torneo_detalle" />
 </navigation>

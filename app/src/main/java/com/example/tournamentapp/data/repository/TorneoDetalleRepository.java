@@ -1,0 +1,23 @@
+package com.example.tournamentapp.data.repository;
+
+import android.app.Application;
+import com.example.tournamentapp.data.model.TorneoDetalleResponse;
+import com.example.tournamentapp.data.network.ApiService;
+import com.example.tournamentapp.data.network.RetrofitClient;
+import com.example.tournamentapp.data.utils.SessionManager;
+import retrofit2.Callback;
+
+public class TorneoDetalleRepository {
+    private ApiService apiService;
+    private SessionManager sessionManager;
+
+    public TorneoDetalleRepository(Application application) {
+        apiService = RetrofitClient.getApiService();
+        sessionManager = new SessionManager(application);
+    }
+
+    public void getDetalleTorneo(int id, Callback<TorneoDetalleResponse> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.getDetalleTorneo(token, id).enqueue(callback);
+    }
+}
