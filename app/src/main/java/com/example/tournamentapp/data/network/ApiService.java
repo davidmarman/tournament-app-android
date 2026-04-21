@@ -22,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -100,4 +101,13 @@ public interface ApiService {
             @Path("id") int torneoId
     );
 
+    // Ruta para editar informacion del usuario
+    @Multipart
+    @PUT("usuario/editar")
+    Call<Map<String, Object>> editarPerfil(
+            @Header("Authorization") String token,
+            @Part("nombre") RequestBody nombre,
+            @Part("apellido") RequestBody apellido,
+            @Part MultipartBody.Part imagen // Puede ser null
+    );
 }

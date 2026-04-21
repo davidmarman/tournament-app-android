@@ -9,6 +9,12 @@ import com.example.tournamentapp.data.network.ApiService;
 import com.example.tournamentapp.data.network.RetrofitClient;
 import com.example.tournamentapp.data.utils.SessionManager;
 
+import java.io.File;
+import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,6 +40,21 @@ public class PerfilRepository {
             @Override
             public void onFailure(Call<PerfilResponse> call, Throwable t) { error.postValue(t.getMessage()); }
         });
+    }
+
+    public void editarPerfil(String nombre, String apellido, File imageFile, Callback<Map<String, Object>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+
+        RequestBody rbNombre = RequestBody.create(MediaType.parse("text/plain"), nombre);
+        RequestBody rbApellido = RequestBody.create(MediaType.parse("text/plain"), apellido);
+
+        MultipartBody.Part imagePart = null;
+        if (imageFile != null) {
+            RequestBody rbFile = RequestBody.create(MediaType.parse("image/*"), imageFile);
+            imagePart = MultipartBody.Part.createFormData("imagen_perfil", imageFile.getName(), rbFile);
+        }
+
+        apiService.editarPerfil(token, rbNombre, rbApellido, imagePart).enqueue(callback);
     }
 }
 

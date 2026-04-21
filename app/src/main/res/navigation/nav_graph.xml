@@ -83,4 +83,9 @@
         android:name="com.example.tournamentapp.ui.fragments.TorneoDetalleFr"
         android:label="fragment_torneo_detalle"
         tools:layout="@layout/fragment_torneo_detalle" />
+    <fragment
+        android:id="@+id/editarPerfilDialog"
+        android:name="com.example.tournamentapp.ui.dialogs.EditarPerfilDialog"
+        android:label="dialog_editar_perfil"
+        tools:layout="@layout/dialog_editar_perfil" />
 </navigation>
