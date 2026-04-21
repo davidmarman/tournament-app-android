@@ -59,4 +59,33 @@ public class EquipoRepository {
 
         apiService.anadirJugador(token, equipoId, body).enqueue(callback);
     }
+
+    public void expulsarJugador(int idEquipo, int idJugador, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.expulsarJugador(token, idEquipo, idJugador).enqueue(callback);
+    }
+
+    public void salirEquipo(int idEquipo, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.salirEquipo(token, idEquipo).enqueue(callback);
+    }
+
+    public void disolverEquipo(int idEquipo, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.disolverEquipo(token, idEquipo).enqueue(callback);
+    }
+
+    public void editarEquipo(int idEquipo, String nombre, java.io.File imageFile, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+
+        okhttp3.RequestBody rbNombre = okhttp3.RequestBody.create(okhttp3.MediaType.parse("text/plain"), nombre);
+
+        okhttp3.MultipartBody.Part imagePart = null;
+        if (imageFile != null) {
+            okhttp3.RequestBody rbFile = okhttp3.RequestBody.create(okhttp3.MediaType.parse("image/*"), imageFile);
+            imagePart = okhttp3.MultipartBody.Part.createFormData("logo", imageFile.getName(), rbFile);
+        }
+
+        apiService.editarEquipo(token, idEquipo, rbNombre, imagePart).enqueue(callback);
+    }
 }

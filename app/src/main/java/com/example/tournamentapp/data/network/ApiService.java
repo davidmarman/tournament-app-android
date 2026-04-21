@@ -5,9 +5,8 @@ import com.example.tournamentapp.data.model.EquipoResponse;
 import com.example.tournamentapp.data.model.ItemSimple;
 import com.example.tournamentapp.data.model.LoginRequest;
 import com.example.tournamentapp.data.model.LoginResponse;
-import com.example.tournamentapp.data.model.Partido;
+import com.example.tournamentapp.data.model.PartidoItem;
 import com.example.tournamentapp.data.model.PerfilResponse;
-import com.example.tournamentapp.data.model.RegisterRequest;
 import com.example.tournamentapp.data.model.RegisterResponse;
 import com.example.tournamentapp.data.model.TorneoDetalleResponse;
 
@@ -18,6 +17,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -48,7 +48,7 @@ public interface ApiService {
 
     // Obtener lista de proximos partidos
     @GET("partidos/mis-proximos")
-    Call<List<Partido>> getMisPartidos(@Header("Authorization") String token);
+    Call<List<PartidoItem>> getMisPartidos(@Header("Authorization") String token);
 
     // Ruta para obtener informacion del usuario
     @GET("usuario/perfil")
@@ -109,5 +109,44 @@ public interface ApiService {
             @Part("nombre") RequestBody nombre,
             @Part("apellido") RequestBody apellido,
             @Part MultipartBody.Part imagen // Puede ser null
+    );
+
+    // Ruta para eliminar un jugador de un equipo
+    @DELETE("equipos/{id_equipo}/expulsar/{id_jugador}")
+    Call<Map<String, String>> expulsarJugador(
+            @Header("Authorization") String token,
+            @Path("id_equipo") int idEquipo,
+            @Path("id_jugador") int idJugador
+    );
+
+    // Obtener perfil por ID (si id es 0 o negativo, el servidor debería devolver el propio)
+    @GET("usuario/perfil/{id}")
+    Call<PerfilResponse> getPerfilAjeno(
+            @Header("Authorization") String token,
+            @Path("id") int userId
+    );
+
+    // Ruta para salir de un equipo
+    @DELETE("equipos/{id_equipo}/salir")
+    Call<Map<String, String>> salirEquipo(
+            @Header("Authorization") String token,
+            @Path("id_equipo") int idEquipo
+    );
+
+    // Ruta para eliminar un equipo, solo si eres capitan
+    @DELETE("equipos/{id_equipo}/disolver")
+    Call<Map<String, String>> disolverEquipo(
+            @Header("Authorization") String token,
+            @Path("id_equipo") int idEquipo
+    );
+
+    // Ruta para editar los equipos
+    @Multipart
+    @PUT("equipos/{id_equipo}/editar")
+    Call<Map<String, String>> editarEquipo(
+            @Header("Authorization") String token,
+            @Path("id_equipo") int idEquipo,
+            @Part("nombre") RequestBody nombre,
+            @Part MultipartBody.Part logo // Puede ser null
     );
 }

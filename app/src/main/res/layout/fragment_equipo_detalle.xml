@@ -11,6 +11,17 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <ImageView
+            android:id="@+id/btnOpcionesEquipo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:padding="12dp"
+            android:src="@drawable/ic_more_vert"
+            app:tint="@color/black"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Opciones del equipo" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

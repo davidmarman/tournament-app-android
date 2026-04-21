@@ -10,13 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
+import com.example.tournamentapp.R;
 import com.example.tournamentapp.data.model.ItemSimple;
 import com.example.tournamentapp.databinding.FragmentEquipoDetalleBinding;
 import com.example.tournamentapp.ui.adapter.JugadoresAdapter;
 import com.example.tournamentapp.ui.adapter.PerfilAdapter;
 import com.example.tournamentapp.ui.dialogs.AnadirJugadorDialog;
+import com.example.tournamentapp.ui.dialogs.EditarEquipoDialog;
+import com.example.tournamentapp.ui.dialogs.OpcionesJugadorDialog;
 import com.example.tournamentapp.ui.viewmodel.EquipoDetalleViewModel;
 
 public class EquipoDetalleFr extends Fragment {
@@ -54,6 +58,17 @@ public class EquipoDetalleFr extends Fragment {
             Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
         });
 
+        viewModel.getMensajeExito().observe(getViewLifecycleOwner(), msg -> {
+            Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        });
+
+        // Observamos si hemos salido o disuelto el equipo para cerrar la pantalla
+        viewModel.getSalirExitStatus().observe(getViewLifecycleOwner(), debeSalir -> {
+            if (debeSalir) {
+                androidx.navigation.Navigation.findNavController(requireView()).navigateUp();
+            }
+        });
+
         // 2. Observar los datos del equipo (¡Todo en un solo bloque!)
         viewModel.getEquipoData().observe(getViewLifecycleOwner(), equipo -> {
 
@@ -62,6 +77,53 @@ public class EquipoDetalleFr extends Fragment {
             // Cargar Logo Equipo
             String urlLogo = "http://130.61.180.130:5000/uploads/equipos/" + equipo.logo;
             Glide.with(this).load(urlLogo).into(binding.ivDetalleLogo);
+
+            // Dentro de tu Observer de EquipoData en EquipoDetalleFr.java:
+
+            binding.btnOpcionesEquipo.setOnClickListener(v -> {
+                android.widget.PopupMenu popup = new android.widget.PopupMenu(requireContext(), v);
+
+                // El menú cambia según tu rango
+                if (equipo.es_capitan) {
+                    popup.getMenu().add(0, 1, 0, "Editar Info");
+                    popup.getMenu().add(0, 2, 0, "Disolver Equipo");
+                } else {
+                    popup.getMenu().add(0, 3, 0, "Salir del Equipo");
+                }
+
+                popup.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == 1) {
+                        // Abrimos el menú de edición pasando los datos actuales
+                        EditarEquipoDialog dialog = EditarEquipoDialog.newInstance(equipo.nombre, equipo.logo);
+                        dialog.setListener((nombreNuevo, uriNueva) -> {
+                            viewModel.editarEquipo(equipoId, nombreNuevo, uriNueva);
+                        });
+                        dialog.show(getChildFragmentManager(), "EditarEquipo");
+                        return true;
+                    }
+                    else if (item.getItemId() == 2) {
+                        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                                .setTitle("¿Disolver " + equipo.nombre + "?")
+                                .setMessage("Esta acción es irreversible. Se borrarán todos los datos y jugadores.")
+                                .setPositiveButton("Disolver", (dialog, which) -> viewModel.disolverEquipo(equipoId))
+                                .setNegativeButton("Cancelar", null)
+                                .show();
+                        return true;
+                    }
+                    else if (item.getItemId() == 3) {
+                        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                                .setTitle("¿Salir de " + equipo.nombre + "?")
+                                .setMessage("Dejarás de pertenecer a este equipo.")
+                                .setPositiveButton("Salir", (dialog, which) -> viewModel.salirDelEquipo(equipoId))
+                                .setNegativeButton("Cancelar", null)
+                                .show();
+                        return true;
+                    }
+                    return false;
+                });
+
+                popup.show();
+            });
 
             // Próximo Partido
             if (equipo.proximo_partido != null) {
@@ -90,7 +152,7 @@ public class EquipoDetalleFr extends Fragment {
                         new JugadoresAdapter.OnJugadorClickListener() {
                             @Override
                             public void onJugadorClick(ItemSimple jugador) {
-                                Toast.makeText(getContext(), "Viendo perfil de: " + jugador.nombre, Toast.LENGTH_SHORT).show();
+                                abrirOpcionesJugador(jugador.id, jugador.nombre);
                             }
 
                             @Override
@@ -109,5 +171,44 @@ public class EquipoDetalleFr extends Fragment {
                 binding.rvJugadores.setAdapter(jugadoresAdapter);
             }
         });
+    }
+
+    // Añade esta función en EquipoDetalleFr.java
+    private void abrirOpcionesJugador(int idJugador, String nombreJugador) {
+        // Necesitamos saber si TU eres el capitán de este equipo
+        // Asumiendo que tu ViewModel ya tiene cargado el detalle del equipo:
+        boolean soyCapitan = viewModel.getEquipoData().getValue() != null &&
+                viewModel.getEquipoData().getValue().es_capitan;
+
+        OpcionesJugadorDialog dialog = OpcionesJugadorDialog.newInstance(idJugador, nombreJugador, soyCapitan);
+
+        dialog.setListener(new OpcionesJugadorDialog.OnJugadorOpcionesListener() {
+            @Override
+            public void onVerPerfil(int idJugador) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("userId", idJugador);
+
+                Navigation.findNavController(requireView())
+                        .navigate(R.id.action_global_perfilFr, bundle);
+            }
+
+            @Override
+            public void onExpulsar(int idJugador, String nombreJugador) {
+                // Confirmación extra de seguridad para no expulsar por error
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("¿Expulsar a " + nombreJugador + "?")
+                        .setMessage("No podrá volver a unirse a menos que le des el código de nuevo.")
+                        .setPositiveButton("Expulsar", (d, w) -> {
+                            if (viewModel.getEquipoData().getValue() != null) {
+                                int idEquipo = viewModel.getEquipoData().getValue().id;
+                                viewModel.expulsarJugador(idEquipo, idJugador);
+                            }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+            }
+        });
+
+        dialog.show(getChildFragmentManager(), "OpcionesJugador");
     }
 }

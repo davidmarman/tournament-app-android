@@ -23,6 +23,10 @@ public class SessionManager {
         return prefs.getString("USER_TOKEN",null);
     }
 
+    public int getUserId() {
+        return prefs.getInt("USER_ID", 0);
+    }
+
     public void logout(){
         editor.clear();
         editor.apply();

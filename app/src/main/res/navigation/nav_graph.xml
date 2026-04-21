@@ -39,7 +39,13 @@
         android:id="@+id/perfilFr"
         android:name="com.example.tournamentapp.ui.fragments.PerfilFr"
         android:label="fragment_perfil"
-        tools:layout="@layout/fragment_perfil" />
+        tools:layout="@layout/fragment_perfil" >
+
+        <argument
+            android:name="userid"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
     <fragment
         android:id="@+id/equipoFr"
         android:name="com.example.tournamentapp.ui.fragments.EquiposFr"
@@ -88,4 +94,17 @@
         android:name="com.example.tournamentapp.ui.dialogs.EditarPerfilDialog"
         android:label="dialog_editar_perfil"
         tools:layout="@layout/dialog_editar_perfil" />
+    <fragment
+        android:id="@+id/opcionesJugadorDialog"
+        android:name="com.example.tournamentapp.ui.dialogs.OpcionesJugadorDialog"
+        android:label="dialog_opciones_jugador"
+        tools:layout="@layout/dialog_opciones_jugador" />
+    <action
+        android:id="@+id/action_global_perfilFr"
+        app:destination="@id/perfilFr" />
+    <fragment
+        android:id="@+id/editarEquipoDialog"
+        android:name="com.example.tournamentapp.ui.dialogs.EditarEquipoDialog"
+        android:label="dialog_editar_equipo"
+        tools:layout="@layout/dialog_editar_equipo" />
 </navigation>

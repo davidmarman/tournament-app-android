@@ -27,6 +27,15 @@ import com.example.tournamentapp.ui.viewmodel.PerfilViewModel;
 public class PerfilFr extends Fragment {
     private FragmentPerfilBinding binding;
     private PerfilViewModel viewModel;
+    private int userIdRecibido = 0;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            userIdRecibido = getArguments().getInt("userId",0);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,11 +53,22 @@ public class PerfilFr extends Fragment {
 
         setupObservers();
         setupClickListeners();
-        viewModel.cargarDatos();
+        viewModel.cargarDatos(userIdRecibido);
     }
 
     private void setupObservers() {
         viewModel.getPerfilData().observe(getViewLifecycleOwner(), p -> {
+
+            // Lógica de visibilidad del botón ajustes
+            SessionManager sm = new SessionManager(requireContext());
+            int miId = sm.getUserId();
+
+            // Si el perfil que veo NO es el mío, oculto el botón de ajustes
+            if (userIdRecibido != 0 && userIdRecibido != miId) {
+                binding.btnAjustes.setVisibility(View.GONE);
+            } else {
+                binding.btnAjustes.setVisibility(View.VISIBLE);
+            }
             binding.tvNombre.setText(p.nombre+" "+p.apellido);
             binding.tvUsername.setText("@" + p.username);
             binding.tvGoles.setText("⚽ " + p.stats.goles + " Goles");

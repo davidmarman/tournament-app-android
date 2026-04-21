@@ -10,4 +10,7 @@ public class PartidoItem {
     public int goles_visit;
     public String estado;
     public String fecha;
+
+    // ¡Añadido de la clase vieja!
+    public String nombre_torneo;
 }

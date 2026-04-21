@@ -35,12 +35,15 @@ public class PerfilViewModel extends AndroidViewModel {
     public LiveData<String> getErrorMsg() { return errorMsg; }
     public LiveData<Boolean> getPerfilActualizado() { return perfilActualizado; }
 
-    public void cargarDatos() { repository.fetchPerfil(perfilData, errorMsg); }
+    // ¡CORREGIDO! Ya no intentamos sacar el token aquí, el Repositorio se encarga.
+    public void cargarDatos(int userId) {
+        repository.fetchPerfil(userId, perfilData, errorMsg);
+    }
 
     public void actualizarPerfil(String nombre, String apellido, Uri imageUri) {
         File file = null;
         if (imageUri != null) {
-            file = uriToFile(imageUri); // Llamamos a la utilidad
+            file = uriToFile(imageUri);
         }
 
         repository.editarPerfil(nombre, apellido, file, new Callback<Map<String, Object>>() {
@@ -48,7 +51,7 @@ public class PerfilViewModel extends AndroidViewModel {
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                 if (response.isSuccessful()) {
                     perfilActualizado.postValue(true);
-                    cargarDatos(); // ¡CORREGIDO! Antes ponía getPerfilUsuario()
+                    cargarDatos(0); // ¡CORREGIDO! Le pasamos el 0 para recargar TU perfil tras editar.
                 } else {
                     errorMsg.postValue("Error al actualizar perfil");
                 }

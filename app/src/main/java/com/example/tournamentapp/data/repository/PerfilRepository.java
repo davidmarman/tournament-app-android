@@ -19,7 +19,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-// REPOSITORY
 public class PerfilRepository {
     private ApiService apiService;
     private SessionManager sessionManager;
@@ -29,16 +28,31 @@ public class PerfilRepository {
         sessionManager = new SessionManager(context);
     }
 
-    public void fetchPerfil(MutableLiveData<PerfilResponse> data, MutableLiveData<String> error) {
+    public SessionManager getSessionManager(){ return sessionManager;}
+
+    // ¡Actualizado para usar userId!
+    public void fetchPerfil(int userId, MutableLiveData<PerfilResponse> data, MutableLiveData<String> error) {
         String token = "Bearer " + sessionManager.fetchAuthToken();
-        apiService.getPerfil(token).enqueue(new Callback<PerfilResponse>() {
+
+        Call<PerfilResponse> call;
+
+        // Si userId es 0, pedimos nuestro propio perfil. Si no, pedimos el del compañero.
+        if (userId == 0) {
+            call = apiService.getPerfil(token); // Tu ruta original
+        } else {
+            call = apiService.getPerfilAjeno(token, userId); // La nueva ruta con ID
+        }
+
+        call.enqueue(new Callback<PerfilResponse>() {
             @Override
             public void onResponse(Call<PerfilResponse> call, Response<PerfilResponse> response) {
                 if (response.isSuccessful()) data.postValue(response.body());
                 else error.postValue("Error de servidor");
             }
             @Override
-            public void onFailure(Call<PerfilResponse> call, Throwable t) { error.postValue(t.getMessage()); }
+            public void onFailure(Call<PerfilResponse> call, Throwable t) {
+                error.postValue(t.getMessage());
+            }
         });
     }
 
@@ -57,4 +71,3 @@ public class PerfilRepository {
         apiService.editarPerfil(token, rbNombre, rbApellido, imagePart).enqueue(callback);
     }
 }
-
