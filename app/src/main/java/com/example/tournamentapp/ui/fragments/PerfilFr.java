@@ -59,22 +59,34 @@ public class PerfilFr extends Fragment {
     private void setupObservers() {
         viewModel.getPerfilData().observe(getViewLifecycleOwner(), p -> {
 
-            // Lógica de visibilidad del botón ajustes
             SessionManager sm = new SessionManager(requireContext());
             int miId = sm.getUserId();
+            String miRol = sm.getUserRole(); // ¡Leemos el rol!
 
-            // Si el perfil que veo NO es el mío, oculto el botón de ajustes
+            // Lógica de visibilidad del botón ajustes
             if (userIdRecibido != 0 && userIdRecibido != miId) {
                 binding.btnAjustes.setVisibility(View.GONE);
             } else {
                 binding.btnAjustes.setVisibility(View.VISIBLE);
             }
+
+            // --- LÓGICA DE LIMPIEZA PARA EL ADMINISTRADOR ---
+            if ("Admin".equals(miRol) && (userIdRecibido == 0 || userIdRecibido == miId)) {
+                // Ocultamos las 3 tarjetas enteras
+                binding.cvEquipos.setVisibility(View.GONE);
+                binding.cvTorneos.setVisibility(View.GONE);
+                binding.cvEstadisticas.setVisibility(View.GONE);
+
+                // Le ponemos un distintivo de Admin
+                binding.tvUsername.setText("Admin | @" + p.username);
+            } else {
+                binding.tvUsername.setText("@" + p.username);
+            }
+
             binding.tvNombre.setText(p.nombre+" "+p.apellido);
-            binding.tvUsername.setText("@" + p.username);
             binding.tvGoles.setText("⚽ " + p.stats.goles + " Goles");
             binding.tvFaltas.setText("🟨 " + p.stats.faltas + " Faltas");
 
-            // ¡ACTUALIZADO AL NUEVO NOMBRE DE VARIABLE!
             String url = "http://130.61.180.130:5000/uploads/perfiles/" + p.imagen;
             Glide.with(this).load(url).circleCrop().placeholder(android.R.drawable.ic_menu_myplaces).into(binding.ivPerfilFoto);
 
@@ -95,11 +107,9 @@ public class PerfilFr extends Fragment {
         binding.btnAjustes.setOnClickListener(v -> {
             PopupMenu popup = new PopupMenu(requireContext(), v);
 
-            // Añadimos las opciones
             popup.getMenu().add(0, 1, 0, "Editar Info.");
             popup.getMenu().add(0, 2, 0, "Cerrar Sesión");
 
-            // ¡UN SOLO LISTENER PARA TODO EL MENÚ!
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 1) {
                     mostrarDialogoEditar();

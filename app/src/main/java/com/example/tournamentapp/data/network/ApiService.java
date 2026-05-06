@@ -1,5 +1,6 @@
 package com.example.tournamentapp.data.network;
 
+import com.example.tournamentapp.data.model.AdminDashboardResponse;
 import com.example.tournamentapp.data.model.EquipoDetalleResponse;
 import com.example.tournamentapp.data.model.EquipoResponse;
 import com.example.tournamentapp.data.model.ItemSimple;
@@ -33,7 +34,6 @@ public interface ApiService {
     Call<LoginResponse> login(@Body LoginRequest request);
 
     //Ruta para el registro de usuarios
-    // Fíjate que usamos @Multipart en lugar de pasar un objeto en el @Body
     @Multipart
     @POST("auth/register")
     Call<RegisterResponse> registerWithImage(
@@ -148,5 +148,30 @@ public interface ApiService {
             @Path("id_equipo") int idEquipo,
             @Part("nombre") RequestBody nombre,
             @Part MultipartBody.Part logo // Puede ser null
+    );
+
+    // Ruta para crear torneos
+    @Multipart
+    @POST("torneos/crear")
+    Call<Map<String, Object>> crearTorneo(
+            @Header("Authorization") String token,
+            @Part("nombre") okhttp3.RequestBody nombre,
+            @Part("tipo") okhttp3.RequestBody tipo,
+            @Part("descripcion") okhttp3.RequestBody descripcion,
+            @Part("fecha_inicio") okhttp3.RequestBody fechaInicio,
+            @Part("dias_juego") okhttp3.RequestBody diasJuego,
+            @Part("horarios_juego") okhttp3.RequestBody horariosJuego,
+            @Part okhttp3.MultipartBody.Part logo
+    );
+
+    // Ruta para el Dashboard del Administrador
+    @GET("torneos/admin-dashboard")
+    Call<AdminDashboardResponse> getAdminDashboard(@Header("Authorization") String token);
+
+    // Ruta para eliminar torneos
+    @DELETE("torneos/{id}")
+    Call<Map<String, String>> eliminarTorneo(
+            @Header("Authorization") String token,
+            @Path("id") int idTorneo
     );
 }

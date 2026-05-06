@@ -17,14 +17,16 @@ public class TorneosAdapter extends RecyclerView.Adapter<TorneosAdapter.ViewHold
 
     private List<ItemSimple> torneos;
     private OnTorneoClickListener listener;
+    private boolean isAdmin;
 
     public interface OnTorneoClickListener {
         void onTorneoClick(ItemSimple torneo);
         void onInscribirClick();
     }
 
-    public TorneosAdapter(List<ItemSimple> torneos, OnTorneoClickListener listener) {
+    public TorneosAdapter(List<ItemSimple> torneos,boolean isAdmin, OnTorneoClickListener listener) {
         this.torneos = torneos;
+        this.isAdmin = isAdmin;
         this.listener = listener;
     }
 
@@ -42,7 +44,11 @@ public class TorneosAdapter extends RecyclerView.Adapter<TorneosAdapter.ViewHold
         if (position == torneos.size()) {
 
             // DIBUJAR BOTÓN DE INSCRIBIRSE
-            holder.binding.tvTorneoNombre.setText("Inscribirse");
+            if (isAdmin) {
+                holder.binding.tvTorneoNombre.setText("Crear Torneo");
+            } else {
+                holder.binding.tvTorneoNombre.setText("Inscribirse");
+            }
             holder.binding.ivTorneoLogo.setImageResource(android.R.drawable.ic_input_add);
             holder.binding.ivTorneoLogo.setBackgroundColor(Color.TRANSPARENT);
 

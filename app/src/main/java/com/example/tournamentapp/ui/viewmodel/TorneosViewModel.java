@@ -1,6 +1,7 @@
 package com.example.tournamentapp.ui.viewmodel;
 
 import android.app.Application;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,6 +13,9 @@ import com.example.tournamentapp.data.model.ItemSimple;
 import com.example.tournamentapp.data.repository.EquipoRepository;
 import com.example.tournamentapp.data.repository.TorneoRepository;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -81,5 +85,47 @@ public class TorneosViewModel extends AndroidViewModel {
                 errorMsg.postValue("Fallo de red");
             }
         });
+    }
+
+    public void crearTorneo(String nombre, String descripcion, String fechaInicio,
+                            String diasJuego, String horariosJuego, Uri logoUri) {
+        File file = null;
+        if (logoUri != null) {
+            file = uriToFile(logoUri);
+        }
+
+        // Por defecto lo crearemos de tipo "Liga"
+        torneoRepository.crearTorneo(nombre, "Liga", descripcion, fechaInicio, diasJuego, horariosJuego, file, new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    mensajeExito.postValue((String) response.body().get("msg"));
+                } else {
+                    errorMsg.postValue("Error al crear el torneo");
+                }
+            }
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+                errorMsg.postValue("Error de conexión");
+            }
+        });
+    }
+
+    // Utilidad: Convertir URI a File físico
+    private File uriToFile(Uri uri) {
+        try {
+            InputStream inputStream = getApplication().getContentResolver().openInputStream(uri);
+            File tempFile = File.createTempFile("torneo_tmp", ".jpg", getApplication().getCacheDir());
+            FileOutputStream outputStream = new FileOutputStream(tempFile);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) outputStream.write(buffer, 0, length);
+            outputStream.close();
+            inputStream.close();
+            return tempFile;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

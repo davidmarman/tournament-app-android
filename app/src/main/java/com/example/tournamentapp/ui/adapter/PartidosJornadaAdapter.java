@@ -12,7 +12,16 @@ import java.util.List;
 public class PartidosJornadaAdapter extends RecyclerView.Adapter<PartidosJornadaAdapter.ViewHolder> {
     private List<PartidoItem> lista;
 
-    public PartidosJornadaAdapter(List<PartidoItem> lista) { this.lista = lista; }
+    // Añade la interfaz
+    public interface OnPartidoClickListener { void onClick(PartidoItem partido); }
+
+    private OnPartidoClickListener listener; // Añade la variable
+
+    // Cambia el constructor
+    public PartidosJornadaAdapter(List<PartidoItem> lista, OnPartidoClickListener listener) {
+        this.lista = lista;
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -28,6 +37,7 @@ public class PartidosJornadaAdapter extends RecyclerView.Adapter<PartidosJornada
         holder.binding.tvVisitanteNombre.setText(partido.equipo_visitante);
         holder.binding.tvMarcador.setText(partido.goles_local + " - " + partido.goles_visit);
         holder.binding.tvEstadoPartido.setText(partido.estado.equals("Pendiente") ? partido.fecha : "Finalizado");
+        holder.itemView.setOnClickListener(v -> listener.onClick(partido));
 
         String baseUrl = "http://130.61.180.130:5000/uploads/equipos/";
         Glide.with(holder.itemView.getContext()).load(baseUrl + partido.logo_local).into(holder.binding.ivLocalLogo);

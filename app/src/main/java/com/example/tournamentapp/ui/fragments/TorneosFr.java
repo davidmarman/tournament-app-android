@@ -51,7 +51,7 @@ public class TorneosFr extends Fragment {
         // 1. Mostrar la lista con el botón incluido
         viewModel.getTorneosData().observe(getViewLifecycleOwner(), torneos -> {
 
-            TorneosAdapter adapter = new TorneosAdapter(torneos, new TorneosAdapter.OnTorneoClickListener() {
+            TorneosAdapter adapter = new TorneosAdapter(torneos, false, new TorneosAdapter.OnTorneoClickListener() {
                 @Override
                 public void onTorneoClick(ItemSimple torneo) {
                     Bundle bundle = new Bundle();

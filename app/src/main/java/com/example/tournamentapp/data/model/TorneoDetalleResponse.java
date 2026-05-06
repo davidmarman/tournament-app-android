@@ -14,5 +14,6 @@ public class TorneoDetalleResponse {
         public String nombre;
         public String logo;
         public String descripcion;
+        public String codigo;
     }
 }

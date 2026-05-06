@@ -52,6 +52,73 @@
                     android:layout_marginTop="4dp" />
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutAdminPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="24dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
+                app:cardBackgroundColor="#E3F2FD"
+                app:strokeWidth="0dp"
+                android:layout_marginBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_secure"
+                        app:tint="#1976D2" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Código de Invitación:"
+                        android:textColor="#1976D2"
+                        android:layout_marginStart="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvAdminCodigo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TRN-XXXX"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="#1976D2" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGenerarCalendario"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="GENERAR CALENDARIO DE PARTIDOS"
+                app:icon="@android:drawable/ic_menu_today"
+                app:backgroundTint="#FF9800" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEliminarTorneo"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ELIMINAR ESTE TORNEO"
+                android:textColor="#D32F2F"
+                android:layout_marginTop="8dp"
+                app:icon="@android:drawable/ic_menu_delete"
+                app:iconTint="#D32F2F" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

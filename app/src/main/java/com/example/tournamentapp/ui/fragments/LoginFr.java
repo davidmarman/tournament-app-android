@@ -63,26 +63,31 @@ public class LoginFr extends Fragment {
     }
 
     private void setupObservers() {
-        // Observamos si el login fue exitoso
         viewModel.getLoginSuccess().observe(getViewLifecycleOwner(), isSuccess -> {
-            // Ocultamos la carga
             binding.progressBar.setVisibility(View.GONE);
             binding.btnLogin.setEnabled(true);
 
             if (isSuccess) {
-                Toast.makeText(requireContext(), "¡Login Correcto!", Toast.LENGTH_SHORT).show();
+                // 1. Instanciamos el SessionManager para preguntar por el rol
+                com.example.tournamentapp.data.utils.SessionManager session =
+                        new com.example.tournamentapp.data.utils.SessionManager(requireContext());
 
-                // NOTA: Descomenta esta línea cuando tengas el HomeFr y el Navigation Graph configurados
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFr_to_homeFr);
+                String rol = session.getUserRole();
+
+                // 2. Tomamos la decisión de ruteo
+                if ("Admin".equals(rol)) {
+                    Toast.makeText(requireContext(), "¡Hola Admin!", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFr_to_adminTorneosFr);
+                } else {
+                    Toast.makeText(requireContext(), "¡Login Correcto!", Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_loginFr_to_homeFr);
+                }
             }
         });
 
-        // Observamos si hubo algún error
         viewModel.getErrorMessage().observe(getViewLifecycleOwner(), error -> {
-            // Ocultamos la carga y mostramos el error
             binding.progressBar.setVisibility(View.GONE);
             binding.btnLogin.setEnabled(true);
-
             Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show();
         });
     }

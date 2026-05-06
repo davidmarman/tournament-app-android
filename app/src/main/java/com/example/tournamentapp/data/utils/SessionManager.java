@@ -19,6 +19,10 @@ public class SessionManager {
         editor.apply();
     }
 
+    public String getUserRole() {
+        return prefs.getString("USER_ROLE", "User"); // Si no encuentra nada, asume "User" por seguridad
+    }
+
     public String fetchAuthToken(){
         return prefs.getString("USER_TOKEN",null);
     }
