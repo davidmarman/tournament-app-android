@@ -15,6 +15,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.example.tournamentapp.R;
 import com.example.tournamentapp.data.utils.SessionManager;
 import com.example.tournamentapp.databinding.FragmentTorneoDetalleBinding;
 import com.example.tournamentapp.ui.adapter.ClasificacionAdapter;
@@ -90,8 +91,10 @@ public class TorneoDetalleFr extends Fragment {
             binding.tvTituloJornada.setText("Jornada " + response.jornada_actual + ":");
             PartidosJornadaAdapter adapter = new PartidosJornadaAdapter(response.partidos, partido -> {
                 if ("Admin".equals(rolUsuario)) {
-                    Toast.makeText(getContext(), "Aquí abriremos el diálogo de Resultados", Toast.LENGTH_SHORT).show();
-                    // Aquí llamaremos al diálogo de resultados en el siguiente paso
+                    // Dentro de tu TorneoDetalleFr, al hacer clic en un partido:
+                    Bundle args = new Bundle();
+                    args.putInt("partidoId", partido.id_partido);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_torneoDetalleFr_to_actaFr, args);
                 }
             });
             binding.rvPartidosJornada.setAdapter(adapter);

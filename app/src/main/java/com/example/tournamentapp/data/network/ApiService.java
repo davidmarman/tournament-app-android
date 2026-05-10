@@ -1,8 +1,10 @@
 package com.example.tournamentapp.data.network;
 
+import com.example.tournamentapp.data.model.ActaResponse;
 import com.example.tournamentapp.data.model.AdminDashboardResponse;
 import com.example.tournamentapp.data.model.EquipoDetalleResponse;
 import com.example.tournamentapp.data.model.EquipoResponse;
+import com.example.tournamentapp.data.model.FinalizarPartidoRequest;
 import com.example.tournamentapp.data.model.ItemSimple;
 import com.example.tournamentapp.data.model.LoginRequest;
 import com.example.tournamentapp.data.model.LoginResponse;
@@ -180,5 +182,20 @@ public interface ApiService {
     Call<Map<String, String>> generarCalendario(
             @Header("Authorization") String token,
             @Path("id") int idTorneo
+    );
+
+    // Ruta para obtener el acta vacía de un partido
+    @GET("partidos/{id}/acta")
+    Call<ActaResponse> getActaPartido(
+            @Header("Authorization") String token,
+            @Path("id") int idPartido
+    );
+
+    // Ruta para finalizar el partido y enviar resultados
+    @POST("partidos/{id}/finalizar")
+    Call<Map<String, String>> finalizarPartido(
+            @Header("Authorization") String token,
+            @Path("id") int idPartido,
+            @Body FinalizarPartidoRequest request
     );
 }

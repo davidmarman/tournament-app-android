@@ -91,7 +91,11 @@
         android:id="@+id/torneoDetalleFr"
         android:name="com.example.tournamentapp.ui.fragments.TorneoDetalleFr"
         android:label="fragment_torneo_detalle"
-        tools:layout="@layout/fragment_torneo_detalle" />
+        tools:layout="@layout/fragment_torneo_detalle" >
+        <action
+            android:id="@+id/action_torneoDetalleFr_to_actaFr"
+            app:destination="@id/actaFr" />
+    </fragment>
     <fragment
         android:id="@+id/editarPerfilDialog"
         android:name="com.example.tournamentapp.ui.dialogs.EditarPerfilDialog"
@@ -127,4 +131,9 @@
             android:id="@+id/action_adminTorneosFr_to_torneoDetalleFr"
             app:destination="@id/torneoDetalleFr" />
     </fragment>
+    <fragment
+        android:id="@+id/actaFr"
+        android:name="com.example.tournamentapp.ui.fragments.ActaFr"
+        android:label="fragment_acta"
+        tools:layout="@layout/fragment_acta" />
 </navigation>
