@@ -174,4 +174,11 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Path("id") int idTorneo
     );
+
+    // Ruta para generar el calendario de un torneo.
+    @POST("torneos/{id}/generar-calendario")
+    Call<Map<String, String>> generarCalendario(
+            @Header("Authorization") String token,
+            @Path("id") int idTorneo
+    );
 }

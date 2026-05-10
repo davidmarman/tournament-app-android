@@ -104,6 +104,14 @@ public class TorneoDetalleFr extends Fragment {
             }
         });
 
+        viewModel.getCalendarioGeneradoExito().observe(getViewLifecycleOwner(), generado -> {
+            if (generado) {
+                Toast.makeText(getContext(), "¡Calendario Listo!", Toast.LENGTH_SHORT).show();
+                binding.btnGenerarCalendario.setVisibility(View.GONE);
+                viewModel.cargarDetalle(torneoId); // Recargamos para ver los partidos
+            }
+        });
+
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), error -> Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
     }
 
@@ -113,8 +121,7 @@ public class TorneoDetalleFr extends Fragment {
                     .setTitle("Generar Calendario")
                     .setMessage("¿Estás seguro? Una vez generado el calendario, no se podrán inscribir más equipos a este torneo.")
                     .setPositiveButton("Generar", (dialog, which) -> {
-                        Toast.makeText(getContext(), "Mandando orden a Flask...", Toast.LENGTH_SHORT).show();
-                        // AQUÍ LLAMAREMOS A LA RUTA MÁGICA DE FLASK (Próximo paso)
+                        viewModel.generarCalendario(torneoId);
                     })
                     .setNegativeButton("Cancelar", null)
                     .show();

@@ -16,8 +16,8 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
     private TorneoDetalleRepository repository;
     private MutableLiveData<TorneoDetalleResponse> torneoDetalle = new MutableLiveData<>();
     private MutableLiveData<String> errorMsg = new MutableLiveData<>();
+    private MutableLiveData<Boolean> calendarioGeneradoExito = new MutableLiveData<>();
 
-    // ¡NUEVO! Variable para vigilar si el borrado ha ido bien
     private MutableLiveData<Boolean> torneoEliminadoExito = new MutableLiveData<>();
 
     public TorneoDetalleViewModel(@NonNull Application application) {
@@ -27,8 +27,8 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
 
     public LiveData<TorneoDetalleResponse> getTorneoDetalle() { return torneoDetalle; }
     public LiveData<String> getErrorMsg() { return errorMsg; }
+    public LiveData<Boolean> getCalendarioGeneradoExito() { return calendarioGeneradoExito; }
 
-    // ¡NUEVO! Getter para la vista
     public LiveData<Boolean> getTorneoEliminadoExito() { return torneoEliminadoExito; }
 
     public void cargarDetalle(int id) {
@@ -49,7 +49,6 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
         });
     }
 
-    // ¡NUEVO! Método que llamamos al darle al botón rojo
     public void eliminarTorneo(int id) {
         repository.eliminarTorneo(id, new Callback<Map<String, String>>() {
             @Override
@@ -69,4 +68,25 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
             }
         });
     }
+
+    public void generarCalendario(int id) {
+        repository.generarCalendario(id, new Callback<Map<String, String>>() {
+            @Override
+            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                if (response.isSuccessful()) {
+                    calendarioGeneradoExito.postValue(true);
+                } else {
+                    errorMsg.postValue("Error: Faltan equipos o ya está generado.");
+                    calendarioGeneradoExito.postValue(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                errorMsg.postValue("Error de conexión");
+                calendarioGeneradoExito.postValue(false);
+            }
+        });
+    }
+
 }

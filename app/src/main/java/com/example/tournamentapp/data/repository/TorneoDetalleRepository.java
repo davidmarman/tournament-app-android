@@ -24,10 +24,14 @@ public class TorneoDetalleRepository {
         apiService.getDetalleTorneo(token, id).enqueue(callback);
     }
 
-    // Añade esto dentro de tu clase TorneoDetalleRepository
     public void eliminarTorneo(int idTorneo, Callback<Map<String, String>> callback) {
         // Asegúrate de tener importado el SessionManager
         String token = "Bearer " + sessionManager.fetchAuthToken();
         apiService.eliminarTorneo(token, idTorneo).enqueue(callback);
+    }
+
+    public void generarCalendario(int idTorneo, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.generarCalendario(token, idTorneo).enqueue(callback);
     }
 }
