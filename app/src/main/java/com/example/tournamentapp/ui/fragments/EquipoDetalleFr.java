@@ -149,6 +149,7 @@ public class EquipoDetalleFr extends Fragment {
                 JugadoresAdapter jugadoresAdapter = new JugadoresAdapter(
                         equipo.jugadores,
                         equipo.es_capitan,
+                        equipo.id_capitan,
                         new JugadoresAdapter.OnJugadorClickListener() {
                             @Override
                             public void onJugadorClick(ItemSimple jugador) {

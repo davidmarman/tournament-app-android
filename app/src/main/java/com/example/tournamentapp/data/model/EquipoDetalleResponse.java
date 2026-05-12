@@ -11,6 +11,7 @@ public class EquipoDetalleResponse {
     public List<ItemSimple> torneos;
     public List<ItemSimple> jugadores;
     public List<String> palmares;
+    public int id_capitan;
 
     public static class ProximoPartido {
         public String rival_nombre;

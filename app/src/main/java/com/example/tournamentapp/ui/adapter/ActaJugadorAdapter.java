@@ -1,6 +1,7 @@
 package com.example.tournamentapp.ui.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -16,14 +17,16 @@ public class ActaJugadorAdapter extends RecyclerView.Adapter<ActaJugadorAdapter.
 
     private List<JugadorActa> jugadores;
     private OnActaChangeListener listener;
+    private int idCapitanEquipo;
 
     // Interfaz para avisar al Fragmento de que el marcador global debe cambiar
     public interface OnActaChangeListener {
         void onGolesChanged();
     }
 
-    public ActaJugadorAdapter(List<JugadorActa> jugadores, OnActaChangeListener listener) {
+    public ActaJugadorAdapter(List<JugadorActa> jugadores, int idCapitanEquipo, OnActaChangeListener listener) {
         this.jugadores = jugadores;
+        this.idCapitanEquipo = idCapitanEquipo;
         this.listener = listener;
     }
 
@@ -39,6 +42,14 @@ public class ActaJugadorAdapter extends RecyclerView.Adapter<ActaJugadorAdapter.
         JugadorActa j = jugadores.get(position);
 
         holder.binding.tvJugadorNombre.setText(j.nombre);
+
+        // Mostrar badge si es el capitán
+        if (j.id_usuario == idCapitanEquipo) {
+            holder.binding.tvBadgeCapitanJugador.setVisibility(View.VISIBLE);
+        } else {
+            holder.binding.tvBadgeCapitanJugador.setVisibility(View.GONE);
+        }
+
         holder.binding.tvGolesContador.setText(String.valueOf(j.goles));
 
         // Cargar foto
@@ -95,7 +106,7 @@ public class ActaJugadorAdapter extends RecyclerView.Adapter<ActaJugadorAdapter.
         return jugadores.size();
     }
 
-    // Método que usaremos cuando cambiemos de pestaña
+    // Metodo que usaremos cuando cambiemos de pestaña
     public void setJugadores(List<JugadorActa> nuevaLista) {
         this.jugadores = nuevaLista;
         notifyDataSetChanged();
@@ -107,5 +118,11 @@ public class ActaJugadorAdapter extends RecyclerView.Adapter<ActaJugadorAdapter.
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    public void updateData(List<JugadorActa> nuevaLista, int nuevoIdCapitan) {
+        this.jugadores = nuevaLista;
+        this.idCapitanEquipo = nuevoIdCapitan;
+        notifyDataSetChanged();
     }
 }

@@ -79,7 +79,7 @@ public class ActaFr extends Fragment {
             binding.tabLayoutActa.addTab(binding.tabLayoutActa.newTab().setText(acta.equipo_visitante.nombre));
 
             // 3. Inicializar el Adaptador con el equipo local (Pestaña 0)
-            adapter = new ActaJugadorAdapter(acta.equipo_local.jugadores, this::actualizarMarcadorGlobal);
+            adapter = new ActaJugadorAdapter(acta.equipo_local.jugadores,acta.equipo_local.capitan,this::actualizarMarcadorGlobal);
             binding.rvActaJugadores.setAdapter(adapter);
 
             // 4. Lógica para cambiar de pestaña
@@ -87,9 +87,11 @@ public class ActaFr extends Fragment {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab.getPosition() == 0) {
-                        adapter.setJugadores(actaActual.equipo_local.jugadores);
+                        // Pasamos los jugadores Y el ID del capitán local
+                        adapter.updateData(actaActual.equipo_local.jugadores, actaActual.equipo_local.capitan);
                     } else {
-                        adapter.setJugadores(actaActual.equipo_visitante.jugadores);
+                        // Pasamos los jugadores Y el ID del capitán visitante
+                        adapter.updateData(actaActual.equipo_visitante.jugadores, actaActual.equipo_visitante.capitan);
                     }
                 }
                 @Override
@@ -127,7 +129,7 @@ public class ActaFr extends Fragment {
 
     // --- MÉTODOS MÁGICOS ---
 
-    // Este método suma todos los goles de los jugadores para ponerlos en el texto gigante de arriba
+    // Este metodo suma todos los goles de los jugadores para ponerlos en el texto gigante de arriba
     private void actualizarMarcadorGlobal() {
         if (actaActual == null) return;
 

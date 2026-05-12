@@ -5,5 +5,6 @@ public class EquipoActa {
     public int id;
     public String nombre;
     public String logo;
+    public int capitan;
     public List<JugadorActa> jugadores;
 }

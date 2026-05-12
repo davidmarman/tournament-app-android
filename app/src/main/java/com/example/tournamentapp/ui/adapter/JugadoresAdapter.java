@@ -2,6 +2,7 @@ package com.example.tournamentapp.ui.adapter;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ public class JugadoresAdapter extends RecyclerView.Adapter<JugadoresAdapter.View
     private List<ItemSimple> jugadores;
     private boolean esCapitan;
     private OnJugadorClickListener listener;
+    private int idCapitanDelEquipo;
 
     // Interfaz para escuchar los clicks desde el Fragmento
     public interface OnJugadorClickListener {
@@ -23,10 +25,11 @@ public class JugadoresAdapter extends RecyclerView.Adapter<JugadoresAdapter.View
         void onAnadirJugadorClick();
     }
 
-    public JugadoresAdapter(List<ItemSimple> jugadores, boolean esCapitan, OnJugadorClickListener listener) {
+    public JugadoresAdapter(List<ItemSimple> jugadores, boolean esCapitan, int idCapitanDelEquipo, OnJugadorClickListener listener) {
         this.jugadores = jugadores;
         this.esCapitan = esCapitan;
         this.listener = listener;
+        this.idCapitanDelEquipo = idCapitanDelEquipo;
     }
 
     @NonNull
@@ -54,6 +57,13 @@ public class JugadoresAdapter extends RecyclerView.Adapter<JugadoresAdapter.View
             ItemSimple jugador = jugadores.get(indexReal);
 
             holder.binding.tvItemNombre.setText(jugador.nombre);
+
+            // Lógica de la "C" de Capitan
+            if (jugador.id == idCapitanDelEquipo) {
+                holder.binding.tvBadgeCapitan.setVisibility(View.VISIBLE);
+            } else {
+                holder.binding.tvBadgeCapitan.setVisibility(View.GONE);
+            }
 
             if (jugador.logo != null && !jugador.logo.isEmpty()) {
                 // Buscamos la imagen en la carpeta de perfiles
