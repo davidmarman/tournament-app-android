@@ -48,6 +48,12 @@
             android:name="userid"
             app:argType="integer"
             android:defaultValue="0"/>
+        <action
+            android:id="@+id/action_perfilFr_to_equipoDetalleFr"
+            app:destination="@id/equipoDetalleFr" />
+        <action
+            android:id="@+id/action_perfilFr_to_torneoDetalleFr"
+            app:destination="@id/torneoDetalleFr" />
     </fragment>
     <fragment
         android:id="@+id/equipoFr"

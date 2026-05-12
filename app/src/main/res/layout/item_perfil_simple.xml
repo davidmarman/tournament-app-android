@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="8dp">
@@ -25,4 +26,18 @@
         android:text="Nombre"
         android:textSize="12sp"
         android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/tvBadgeCapitan"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:text="C"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="#444444"
+        android:gravity="center"
+        android:background="@drawable/bg_capitan_circle"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/ivFotoSimple"
+        app:layout_constraintEnd_toEndOf="@+id/ivFotoSimple"
+        tools:visibility="visible" />
 </LinearLayout>

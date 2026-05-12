@@ -85,13 +85,14 @@ public class PerfilFr extends Fragment {
 
             binding.tvNombre.setText(p.nombre+" "+p.apellido);
             binding.tvGoles.setText("⚽ " + p.stats.goles + " Goles");
-            binding.tvFaltas.setText("🟨 " + p.stats.faltas + " Faltas");
+            binding.tvAmarillas.setText("🟨 " + p.stats.amarillas);
+            binding.tvRojas.setText("🟥 " + p.stats.rojas);
 
             String url = "http://130.61.180.130:5000/uploads/perfiles/" + p.imagen;
             Glide.with(this).load(url).circleCrop().placeholder(android.R.drawable.ic_menu_myplaces).into(binding.ivPerfilFoto);
 
-            binding.rvEquiposPerfil.setAdapter(new PerfilAdapter(p.equipos,"equipos"));
-            binding.rvTorneosPerfil.setAdapter(new PerfilAdapter(p.torneos,"torneos"));
+            binding.rvEquiposPerfil.setAdapter(new PerfilAdapter(p.equipos,"equipos", p.id));
+            binding.rvTorneosPerfil.setAdapter(new PerfilAdapter(p.torneos,"torneos", p.id));
         });
 
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), msg -> Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show());

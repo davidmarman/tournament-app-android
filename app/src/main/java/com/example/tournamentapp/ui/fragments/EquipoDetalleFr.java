@@ -139,7 +139,7 @@ public class EquipoDetalleFr extends Fragment {
 
             // Torneos
             binding.rvTorneosInscrito.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            binding.rvTorneosInscrito.setAdapter(new PerfilAdapter(equipo.torneos, "torneos"));
+            binding.rvTorneosInscrito.setAdapter(new PerfilAdapter(equipo.torneos, "torneos",0));
 
             // Jugadores
             if (equipo.jugadores != null) {

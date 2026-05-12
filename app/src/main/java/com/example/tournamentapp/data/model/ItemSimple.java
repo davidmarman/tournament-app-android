@@ -4,6 +4,7 @@ public class ItemSimple {
     public int id;
     public String nombre;
     public String logo; // Opcional, para que sirva tanto para torneos como equipos
+    public int idCapitan;
     public String codigo; // Solo sirve para torneos
 
     // Constructor vacío para Retrofit

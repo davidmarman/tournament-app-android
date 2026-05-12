@@ -3,6 +3,7 @@ package com.example.tournamentapp.data.model;
 import java.util.List;
 
 public class PerfilResponse {
+    public int id;
     public String nombre;
     public String apellido; // ¡AÑADIDO!
     public String username;
@@ -13,6 +14,7 @@ public class PerfilResponse {
 
     public static class Stats {
         public int goles;
-        public int faltas;
+        public int amarillas;
+        public int rojas;
     }
 }
