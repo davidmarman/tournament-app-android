@@ -27,6 +27,8 @@ public class TorneoDetalleFr extends Fragment {
     private TorneoDetalleViewModel viewModel;
     private int torneoId;
     private String rolUsuario;
+    private boolean mostrandoDetalles = false;
+    private ClasificacionAdapter clasificacionAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +87,9 @@ public class TorneoDetalleFr extends Fragment {
             Glide.with(this).load(urlLogo).into(binding.ivDetalleTorneoLogo);
 
             // 3. Clasificación
-            binding.rvClasificacion.setAdapter(new ClasificacionAdapter(response.clasificacion));
+            clasificacionAdapter = new ClasificacionAdapter(response.clasificacion);
+            clasificacionAdapter.setExpanded(mostrandoDetalles);
+            binding.rvClasificacion.setAdapter(clasificacionAdapter);
 
             // 4. Partidos (Añadiendo clickeabilidad para Admin como pediste)
             binding.tvTituloJornada.setText("Jornada " + response.jornada_actual + ":");
@@ -141,6 +145,24 @@ public class TorneoDetalleFr extends Fragment {
                     .setNegativeButton("Cancelar", null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+        });
+
+        // Dentro de onViewCreated o setupClickListeners
+        binding.btnToggleStats.setOnClickListener(v -> {
+            // 1. Alternar el estado (puedes usar una variable booleana en el fragmento)
+            mostrandoDetalles = !mostrandoDetalles;
+
+            // 2. Cambiar visibilidad de las columnas de la cabecera
+            binding.headerDetalle.setVisibility(mostrandoDetalles ? View.VISIBLE : View.GONE);
+
+            // 3. Cambiar el icono del botón (+ o -)
+            binding.btnToggleStats.setImageResource(mostrandoDetalles ?
+                    android.R.drawable.ic_menu_close_clear_cancel : android.R.drawable.ic_menu_add);
+
+            // 4. Avisar al adaptador para que actualice las filas
+            if (clasificacionAdapter != null) {
+                clasificacionAdapter.setExpanded(mostrandoDetalles);
+            }
         });
     }
 }

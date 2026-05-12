@@ -7,4 +7,8 @@ public class ClasificacionItem {
     public int pts;
     public int gf;
     public int gc;
+    public int pj;
+    public int pg;
+    public int pe;
+    public int pp;
 }

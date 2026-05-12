@@ -64,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 int currentId = navController.getCurrentDestination() != null ?
                         navController.getCurrentDestination().getId() : 0;
 
-                // ¡AÑADIDA LA PANTALLA adminTorneosFr A LA LISTA DE SALIDA!
+
                 if (currentId == R.id.homeFr || currentId == R.id.equipoFr ||
-                        currentId == R.id.torneosFr || currentId == R.id.perfilFr ||
+                        currentId == R.id.torneosFr ||
                         currentId == R.id.adminTorneosFr) {
 
                     finish(); // Salimos de la aplicación de inmediato

@@ -146,11 +146,43 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="12dp"
+                    android:gravity="center_vertical"
                     android:background="#EEEEEE">
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Equipo" android:textStyle="bold"/>
-                    <TextView android:layout_width="40dp" android:layout_height="wrap_content" android:text="Pts" android:gravity="center" android:textStyle="bold"/>
-                    <TextView android:layout_width="40dp" android:layout_height="wrap_content" android:text="GF" android:gravity="center" android:textStyle="bold"/>
-                    <TextView android:layout_width="40dp" android:layout_height="wrap_content" android:text="GC" android:gravity="center" android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Equipo"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+                    <ImageButton
+                        android:id="@+id/btnToggleStats"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@android:drawable/ic_menu_add"
+                        app:tint="#666666" />
+
+                    <LinearLayout
+                        android:id="@+id/headerDetalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="G" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="E" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="P" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="GF" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="GC" android:gravity="center" android:textStyle="bold"/>
+                    </LinearLayout>
+
+
+                    <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="PJ" android:gravity="center" android:textStyle="bold"/>
+                    <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="Pts" android:gravity="center" android:textStyle="bold"/>
+
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
