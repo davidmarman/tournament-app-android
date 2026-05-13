@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.tournamentapp.data.model.EquipoDetalleResponse;
 import com.example.tournamentapp.data.repository.EquipoRepository;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -124,6 +125,30 @@ public class EquipoDetalleViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<Map<String, String>> call, Throwable t) {
                 errorMsg.postValue("Fallo de conexión");
+            }
+        });
+    }
+
+    public void cederCapitania(int idEquipo, int nuevoCapitanId) {
+        Map<String, Integer> body = new HashMap<>();
+        body.put("nuevo_capitan_id", nuevoCapitanId);
+
+        repository.cederCapitania(idEquipo, body, new Callback<Map<String, String>>() {
+            @Override
+            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                if (response.isSuccessful()) {
+                    mensajeExito.postValue("Has cedido la capitanía correctamente.");
+                    // Recargamos el detalle para que la UI se actualice
+                    // (ahora verás el botón de "Salir" en lugar de "Disolver")
+                    cargarDetalle(idEquipo);
+                } else {
+                    errorMsg.postValue("Error al ceder la capitanía.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                errorMsg.postValue("Error de conexión.");
             }
         });
     }

@@ -74,7 +74,7 @@ public class EquipoDetalleFr extends Fragment {
             }
         });
 
-        // 2. Observar los datos del equipo (¡Todo en un solo bloque!)
+        // 2. Observar los datos del equipo
         viewModel.getEquipoData().observe(getViewLifecycleOwner(), equipo -> {
 
             binding.tvDetalleNombre.setText(equipo.nombre);
@@ -219,6 +219,18 @@ public class EquipoDetalleFr extends Fragment {
                                 int idEquipo = viewModel.getEquipoData().getValue().id;
                                 viewModel.expulsarJugador(idEquipo, idJugador);
                             }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+            }
+
+            @Override
+            public void onCederCapitania(int idJugador, String nombreJugador) {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("¿Ceder capitanía?")
+                        .setMessage("Dejarás de ser el capitán y " + nombreJugador + " tendrá el control total del equipo. Esta acción no se puede deshacer.")
+                        .setPositiveButton("CEDER MANDO", (d, w) -> {
+                            viewModel.cederCapitania(equipoId, idJugador);
                         })
                         .setNegativeButton("Cancelar", null)
                         .show();

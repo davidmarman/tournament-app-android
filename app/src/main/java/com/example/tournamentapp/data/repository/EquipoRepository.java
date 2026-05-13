@@ -88,4 +88,9 @@ public class EquipoRepository {
 
         apiService.editarEquipo(token, idEquipo, rbNombre, imagePart).enqueue(callback);
     }
+
+    public void cederCapitania(int idEquipo, Map<String, Integer> body, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.cederCapitania(token, idEquipo, body).enqueue(callback);
+    }
 }

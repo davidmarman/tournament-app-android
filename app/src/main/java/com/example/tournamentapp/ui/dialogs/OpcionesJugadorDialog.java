@@ -20,6 +20,7 @@ public class OpcionesJugadorDialog extends BottomSheetDialogFragment {
     public interface OnJugadorOpcionesListener {
         void onVerPerfil(int idJugador);
         void onExpulsar(int idJugador, String nombre);
+        void onCederCapitania(int idJugador, String nombreJugador);
     }
 
     public static OpcionesJugadorDialog newInstance(int idJugador, String nombreJugador, boolean esCapitan) {
@@ -60,6 +61,10 @@ public class OpcionesJugadorDialog extends BottomSheetDialogFragment {
         binding.btnExpulsar.setOnClickListener(v -> {
             if (listener != null) listener.onExpulsar(idJugador, nombreJugador);
             dismiss();
+        });
+
+        binding.btnCederCapitania.setOnClickListener(v ->{
+            if (listener != null) listener.onCederCapitania(idJugador, nombreJugador);
         });
     }
 

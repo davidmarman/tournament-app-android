@@ -205,4 +205,12 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Path("id") int idTorneo
     );
+
+    // Ruta para ceder la capitania de un equipo
+    @POST("equipos/{id}/ceder-capitania")
+    Call<Map<String, String>> cederCapitania(
+            @Header("Authorization") String token,
+            @Path("id") int idEquipo,
+            @Body Map<String, Integer> body
+    );
 }
