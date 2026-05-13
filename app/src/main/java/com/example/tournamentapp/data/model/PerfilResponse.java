@@ -10,6 +10,7 @@ public class PerfilResponse {
     public String imagen; // ¡UNIFICADO EL NOMBRE!
     public List<ItemSimple> equipos;
     public List<ItemSimple> torneos;
+    public List<PalmaresItem> palmares;
     public Stats stats;
 
     public static class Stats {

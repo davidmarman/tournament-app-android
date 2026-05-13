@@ -6,4 +6,5 @@ public class PalmaresItem {
     public String tipo_logro; // 'Campeon', 'Pichichi', 'Mas Amarillas', etc.
     public int valor_stats;   // Para los goles o tarjetas
     public String fecha_logro;
+    public boolean es_individual;
 }

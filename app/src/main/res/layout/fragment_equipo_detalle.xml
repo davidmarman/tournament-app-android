@@ -118,21 +118,27 @@
             android:orientation="horizontal"
             android:layout_marginBottom="32dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Palmarés Histórico:"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:id="@+id/tvPalmares"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Aún no hay trofeos en las vitrinas."
-            android:textColor="#888888"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="32dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPalmaresEquipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <TextView
+                android:id="@+id/tvPalmaresVacio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Aún no hay trofeos en las vitrinas."
+                android:textColor="#888888"
+                android:visibility="visible" />
+        </FrameLayout>
 
         <TextView
             android:layout_width="wrap_content"

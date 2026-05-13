@@ -17,6 +17,7 @@ import com.example.tournamentapp.R;
 import com.example.tournamentapp.data.model.ItemSimple;
 import com.example.tournamentapp.databinding.FragmentEquipoDetalleBinding;
 import com.example.tournamentapp.ui.adapter.JugadoresAdapter;
+import com.example.tournamentapp.ui.adapter.PalmaresAdapter;
 import com.example.tournamentapp.ui.adapter.PerfilAdapter;
 import com.example.tournamentapp.ui.dialogs.AnadirJugadorDialog;
 import com.example.tournamentapp.ui.dialogs.EditarEquipoDialog;
@@ -50,6 +51,10 @@ public class EquipoDetalleFr extends Fragment {
 
         setupObservers();
         viewModel.cargarDetalle(equipoId);
+
+        binding.rvPalmaresEquipo.setLayoutManager(
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
+        );
     }
 
     private void setupObservers() {
@@ -78,7 +83,6 @@ public class EquipoDetalleFr extends Fragment {
             String urlLogo = "http://130.61.180.130:5000/uploads/equipos/" + equipo.logo;
             Glide.with(this).load(urlLogo).into(binding.ivDetalleLogo);
 
-            // Dentro de tu Observer de EquipoData en EquipoDetalleFr.java:
 
             binding.btnOpcionesEquipo.setOnClickListener(v -> {
                 android.widget.PopupMenu popup = new android.widget.PopupMenu(requireContext(), v);
@@ -141,6 +145,20 @@ public class EquipoDetalleFr extends Fragment {
             binding.rvTorneosInscrito.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
             binding.rvTorneosInscrito.setAdapter(new PerfilAdapter(equipo.torneos, "torneos",0));
 
+            // Palmares
+            if (equipo.palmares != null && !equipo.palmares.isEmpty()) {
+                // Si hay trofeos: ocultamos el texto de "vacio" y mostramos el RecyclerView
+                binding.tvPalmaresVacio.setVisibility(View.GONE);
+                binding.rvPalmaresEquipo.setVisibility(View.VISIBLE);
+
+                PalmaresAdapter palmaresAdapter = new PalmaresAdapter(equipo.palmares);
+                binding.rvPalmaresEquipo.setAdapter(palmaresAdapter);
+            } else {
+                // Si no hay nada: mostramos el mensaje por defecto
+                binding.tvPalmaresVacio.setVisibility(View.VISIBLE);
+                binding.rvPalmaresEquipo.setVisibility(View.GONE);
+            }
+
             // Jugadores
             if (equipo.jugadores != null) {
                 binding.rvJugadores.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -158,7 +176,6 @@ public class EquipoDetalleFr extends Fragment {
 
                             @Override
                             public void onAnadirJugadorClick() {
-                                // ¡AQUÍ ESTÁ LA MAGIA CORREGIDA! Abrimos el diálogo directamente
                                 AnadirJugadorDialog dialog = new AnadirJugadorDialog();
                                 dialog.setListener(username -> {
                                     // Llamamos al ViewModel para añadir al usuario
@@ -174,10 +191,8 @@ public class EquipoDetalleFr extends Fragment {
         });
     }
 
-    // Añade esta función en EquipoDetalleFr.java
     private void abrirOpcionesJugador(int idJugador, String nombreJugador) {
         // Necesitamos saber si TU eres el capitán de este equipo
-        // Asumiendo que tu ViewModel ya tiene cargado el detalle del equipo:
         boolean soyCapitan = viewModel.getEquipoData().getValue() != null &&
                 viewModel.getEquipoData().getValue().es_capitan;
 

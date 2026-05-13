@@ -17,12 +17,17 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tournamentapp.R;
+import com.example.tournamentapp.data.model.PalmaresItem;
 import com.example.tournamentapp.data.model.PerfilResponse;
 import com.example.tournamentapp.data.utils.SessionManager;
 import com.example.tournamentapp.databinding.FragmentPerfilBinding;
+import com.example.tournamentapp.ui.adapter.PalmaresAdapter;
 import com.example.tournamentapp.ui.adapter.PerfilAdapter;
 import com.example.tournamentapp.ui.dialogs.EditarPerfilDialog;
 import com.example.tournamentapp.ui.viewmodel.PerfilViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PerfilFr extends Fragment {
     private FragmentPerfilBinding binding;
@@ -93,6 +98,33 @@ public class PerfilFr extends Fragment {
 
             binding.rvEquiposPerfil.setAdapter(new PerfilAdapter(p.equipos,"equipos", p.id));
             binding.rvTorneosPerfil.setAdapter(new PerfilAdapter(p.torneos,"torneos", p.id));
+
+            // Palmares
+            if (p.palmares != null && !p.palmares.isEmpty()) {
+                List<PalmaresItem> individuales = new ArrayList<>();
+                List<PalmaresItem> equiposLogros = new ArrayList<>();
+
+                // Separamos según el booleano que envía Flask
+                for (PalmaresItem palmaresItem : p.palmares) {
+                    if (palmaresItem.es_individual) {
+                        individuales.add(palmaresItem);
+                    } else {
+                        equiposLogros.add(palmaresItem);
+                    }
+                }
+
+                // Configurar Vitrina de Equipos
+                if (!equiposLogros.isEmpty()) {
+                    binding.cvPalmaresEquipo.setVisibility(View.VISIBLE);
+                    binding.rvPalmaresEquipo.setAdapter(new PalmaresAdapter(equiposLogros));
+                }
+
+                // Configurar Logros Individuales
+                if (!individuales.isEmpty()) {
+                    binding.cvPalmaresIndividual.setVisibility(View.VISIBLE);
+                    binding.rvPalmaresIndividual.setAdapter(new PalmaresAdapter(individuales));
+                }
+            }
         });
 
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), msg -> Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show());
@@ -102,6 +134,8 @@ public class PerfilFr extends Fragment {
                 Toast.makeText(getContext(), "Perfil actualizado", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void setupClickListeners() {
