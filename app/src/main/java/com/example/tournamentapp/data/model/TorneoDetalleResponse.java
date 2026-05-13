@@ -6,6 +6,7 @@ public class TorneoDetalleResponse {
     public TorneoInfo info;
     public List<ClasificacionItem> clasificacion;
     public int jornada_actual;
+    public int max_jornadas;
     public List<PartidoItem> partidos;
 
     // Sub-clase para la cabecera

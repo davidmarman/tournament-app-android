@@ -5,8 +5,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.example.tournamentapp.data.model.PartidoItem;
 import com.example.tournamentapp.data.model.TorneoDetalleResponse;
 import com.example.tournamentapp.data.repository.TorneoDetalleRepository;
+
+import java.util.List;
 import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,6 +24,7 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
 
     private MutableLiveData<Boolean> torneoEliminadoExito = new MutableLiveData<>();
     private MutableLiveData<Boolean> torneoFinalizadoExito = new MutableLiveData<>();
+    private MutableLiveData<List<PartidoItem>> partidosJornada = new MutableLiveData<>();
 
     public TorneoDetalleViewModel(@NonNull Application application) {
         super(application);
@@ -32,6 +37,7 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
 
     public LiveData<Boolean> getTorneoEliminadoExito() { return torneoEliminadoExito; }
     public LiveData<Boolean> getTorneoFinalizadoExito() { return torneoFinalizadoExito; }
+    public LiveData<List<PartidoItem>> getPartidosJornada() { return partidosJornada; }
 
     public void cargarDetalle(int id) {
         repository.getDetalleTorneo(id, new Callback<TorneoDetalleResponse>() {
@@ -108,6 +114,20 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
                 errorMsg.postValue("Error de conexión al finalizar");
                 torneoFinalizadoExito.postValue(false);
             }
+        });
+    }
+
+    public void cargarJornadaEspecifica(int idTorneo, int numJornada) {
+        repository.getDetalleTorneoConJornada(idTorneo, numJornada, new Callback<TorneoDetalleResponse>() {
+            @Override
+            public void onResponse(Call<TorneoDetalleResponse> call, Response<TorneoDetalleResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Actualizamos solo la lista de partidos
+                    partidosJornada.postValue(response.body().partidos);
+                }
+            }
+            @Override
+            public void onFailure(Call<TorneoDetalleResponse> call, Throwable t) { /* error */ }
         });
     }
 

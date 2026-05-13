@@ -28,6 +28,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -100,7 +101,8 @@ public interface ApiService {
     @GET("torneos/{id}/detalle")
     Call<TorneoDetalleResponse> getDetalleTorneo(
             @Header("Authorization") String token,
-            @Path("id") int torneoId
+            @Path("id") int torneoId,
+            @Query("jornada") Integer jornada
     );
 
     // Ruta para editar informacion del usuario

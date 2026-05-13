@@ -21,7 +21,12 @@ public class TorneoDetalleRepository {
 
     public void getDetalleTorneo(int id, Callback<TorneoDetalleResponse> callback) {
         String token = "Bearer " + sessionManager.fetchAuthToken();
-        apiService.getDetalleTorneo(token, id).enqueue(callback);
+        apiService.getDetalleTorneo(token, id,null).enqueue(callback);
+    }
+
+    public void getDetalleTorneoConJornada(int id, int jornada, Callback<TorneoDetalleResponse> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.getDetalleTorneo(token, id, jornada).enqueue(callback);
     }
 
     public void eliminarTorneo(int idTorneo, Callback<Map<String, String>> callback) {

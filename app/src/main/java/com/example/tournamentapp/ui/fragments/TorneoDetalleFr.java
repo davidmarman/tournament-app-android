@@ -30,6 +30,8 @@ public class TorneoDetalleFr extends Fragment {
     private String rolUsuario;
     private boolean mostrandoDetalles = false;
     private ClasificacionAdapter clasificacionAdapter;
+    private int jornadaVisible = 1;
+    private int maxJornadas = 1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class TorneoDetalleFr extends Fragment {
 
         setupObservers();
         setupClickListeners();
+        configurarNavegacionJornadas();
 
         viewModel.cargarDetalle(torneoId);
     }
@@ -98,6 +101,11 @@ public class TorneoDetalleFr extends Fragment {
             String urlLogo = "http://130.61.180.130:5000/uploads/torneos/" + response.info.logo;
             Glide.with(this).load(urlLogo).into(binding.ivDetalleTorneoLogo);
 
+            this.maxJornadas = response.max_jornadas;
+            this.jornadaVisible = response.jornada_actual;
+
+            binding.tvContadorJornada.setText(jornadaVisible + " / " + maxJornadas);
+
             // 3. Clasificación
             clasificacionAdapter = new ClasificacionAdapter(response.clasificacion);
             clasificacionAdapter.setExpanded(mostrandoDetalles);
@@ -137,6 +145,17 @@ public class TorneoDetalleFr extends Fragment {
                 // Recargamos el detalle para que el estado pase a 'Finalizado' y se actualice la UI
                 viewModel.cargarDetalle(torneoId);
             }
+        });
+
+        viewModel.getPartidosJornada().observe(getViewLifecycleOwner(), partidos -> {
+            PartidosJornadaAdapter adapter = new PartidosJornadaAdapter(partidos, partido -> {
+                if ("Admin".equals(rolUsuario)) {
+                    Bundle args = new Bundle();
+                    args.putInt("partidoId", partido.id_partido);
+                    Navigation.findNavController(requireView()).navigate(R.id.action_torneoDetalleFr_to_actaFr, args);
+                }
+            });
+            binding.rvPartidosJornada.setAdapter(adapter);
         });
 
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), error -> Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
@@ -195,5 +214,30 @@ public class TorneoDetalleFr extends Fragment {
                     .setNegativeButton("Cancelar", null)
                     .show();
         });
+    }
+
+    private void configurarNavegacionJornadas() {
+        binding.btnJornadaAnterior.setOnClickListener(v -> {
+            if (jornadaVisible > 1) {
+                jornadaVisible--;
+                cargarSoloJornada();
+            }
+        });
+
+        binding.btnJornadaSiguiente.setOnClickListener(v -> {
+            if (jornadaVisible < maxJornadas) {
+                jornadaVisible++;
+                cargarSoloJornada();
+            }
+        });
+    }
+
+    private void cargarSoloJornada() {
+        // Actualizamos el texto del contador antes de pedir
+        binding.tvContadorJornada.setText(jornadaVisible + " / " + maxJornadas);
+        binding.tvTituloJornada.setText("Jornada " + jornadaVisible);
+
+        // Llamamos al ViewModel pasando la jornada específica
+        viewModel.cargarJornadaEspecifica(torneoId, jornadaVisible);
     }
 }
