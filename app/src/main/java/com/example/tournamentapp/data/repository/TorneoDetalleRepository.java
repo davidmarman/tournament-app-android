@@ -34,4 +34,9 @@ public class TorneoDetalleRepository {
         String token = "Bearer " + sessionManager.fetchAuthToken();
         apiService.generarCalendario(token, idTorneo).enqueue(callback);
     }
+
+    public void finalizarTorneo(int idTorneo, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.finalizarTorneo(token, idTorneo).enqueue(callback);
+    }
 }

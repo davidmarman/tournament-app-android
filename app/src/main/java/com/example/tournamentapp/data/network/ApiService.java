@@ -198,4 +198,11 @@ public interface ApiService {
             @Path("id") int idPartido,
             @Body FinalizarPartidoRequest request
     );
+
+    // Ruta para finalizar el torneo y repartir premios
+    @POST("torneos/{id}/finalizar")
+    Call<Map<String, String>> finalizarTorneo(
+            @Header("Authorization") String token,
+            @Path("id") int idTorneo
+    );
 }

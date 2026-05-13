@@ -1,5 +1,6 @@
 package com.example.tournamentapp.ui.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,17 @@ public class TorneoDetalleFr extends Fragment {
     private void setupObservers() {
         viewModel.getTorneoDetalle().observe(getViewLifecycleOwner(), response -> {
 
+            // Dentro del observe de torneoDetalle
+            if ("Finalizado".equals(response.info.estado)) {
+                binding.btnFinalizarTorneo.setVisibility(View.GONE);
+                binding.btnGenerarCalendario.setVisibility(View.GONE);
+                binding.layoutAdminPanel.setVisibility(View.GONE);
+
+
+                binding.tvTorneoFinalizado.setVisibility(View.VISIBLE);
+                binding.tvTorneoFinalizado.setTextColor(Color.GREEN);
+            }
+
             // 1. Mostrar Panel Admin si es necesario
             if ("Admin".equals(rolUsuario)) {
                 binding.layoutAdminPanel.setVisibility(View.VISIBLE);
@@ -119,6 +131,14 @@ public class TorneoDetalleFr extends Fragment {
             }
         });
 
+        viewModel.getTorneoFinalizadoExito().observe(getViewLifecycleOwner(), exito -> {
+            if (exito) {
+                Toast.makeText(getContext(), "¡Torneo Finalizado! Premios entregados.", Toast.LENGTH_LONG).show();
+                // Recargamos el detalle para que el estado pase a 'Finalizado' y se actualice la UI
+                viewModel.cargarDetalle(torneoId);
+            }
+        });
+
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), error -> Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
     }
 
@@ -163,6 +183,17 @@ public class TorneoDetalleFr extends Fragment {
             if (clasificacionAdapter != null) {
                 clasificacionAdapter.setExpanded(mostrandoDetalles);
             }
+        });
+
+        binding.btnFinalizarTorneo.setOnClickListener(v -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("¿Finalizar Torneo?")
+                    .setMessage("Se calcularán los ganadores y se cerrará el torneo permanentemente. ¿Continuar?")
+                    .setPositiveButton("SÍ, FINALIZAR", (dialog, which) -> {
+                        viewModel.finalizarTorneo(torneoId);
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
         });
     }
 }

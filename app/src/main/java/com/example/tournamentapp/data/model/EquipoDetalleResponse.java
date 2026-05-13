@@ -10,7 +10,7 @@ public class EquipoDetalleResponse {
     public ProximoPartido proximo_partido;
     public List<ItemSimple> torneos;
     public List<ItemSimple> jugadores;
-    public List<String> palmares;
+    public List<PalmaresItem> palmares;
     public int id_capitan;
 
     public static class ProximoPartido {

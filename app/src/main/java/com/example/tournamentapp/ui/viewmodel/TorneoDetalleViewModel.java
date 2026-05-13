@@ -19,6 +19,7 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
     private MutableLiveData<Boolean> calendarioGeneradoExito = new MutableLiveData<>();
 
     private MutableLiveData<Boolean> torneoEliminadoExito = new MutableLiveData<>();
+    private MutableLiveData<Boolean> torneoFinalizadoExito = new MutableLiveData<>();
 
     public TorneoDetalleViewModel(@NonNull Application application) {
         super(application);
@@ -30,6 +31,7 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
     public LiveData<Boolean> getCalendarioGeneradoExito() { return calendarioGeneradoExito; }
 
     public LiveData<Boolean> getTorneoEliminadoExito() { return torneoEliminadoExito; }
+    public LiveData<Boolean> getTorneoFinalizadoExito() { return torneoFinalizadoExito; }
 
     public void cargarDetalle(int id) {
         repository.getDetalleTorneo(id, new Callback<TorneoDetalleResponse>() {
@@ -85,6 +87,26 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
             public void onFailure(Call<Map<String, String>> call, Throwable t) {
                 errorMsg.postValue("Error de conexión");
                 calendarioGeneradoExito.postValue(false);
+            }
+        });
+    }
+
+    public void finalizarTorneo(int id) {
+        repository.finalizarTorneo(id, new Callback<Map<String, String>>() {
+            @Override
+            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                if (response.isSuccessful()) {
+                    torneoFinalizadoExito.postValue(true);
+                } else {
+                    errorMsg.postValue("Error al finalizar el torneo. Revisa que haya partidos jugados.");
+                    torneoFinalizadoExito.postValue(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                errorMsg.postValue("Error de conexión al finalizar");
+                torneoFinalizadoExito.postValue(false);
             }
         });
     }

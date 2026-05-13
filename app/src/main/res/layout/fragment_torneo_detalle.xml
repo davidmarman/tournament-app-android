@@ -109,6 +109,18 @@
                 app:backgroundTint="#FF9800" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFinalizarTorneo"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FINALIZAR TORNEO Y ENTREGAR PREMIOS"
+                android:textColor="#4CAF50"
+                app:strokeColor="#4CAF50"
+                android:layout_marginTop="8dp"
+                app:icon="@android:drawable/ic_menu_agenda"
+                app:iconTint="#4CAF50" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEliminarTorneo"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
@@ -119,6 +131,17 @@
                 app:icon="@android:drawable/ic_menu_delete"
                 app:iconTint="#D32F2F" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTorneoFinalizado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Torneo Finalizado"
+            android:layout_gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
