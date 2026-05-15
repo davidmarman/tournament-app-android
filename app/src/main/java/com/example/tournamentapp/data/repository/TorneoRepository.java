@@ -42,7 +42,7 @@ public class TorneoRepository {
     }
 
     public void crearTorneo(String nombre, String tipo, String descripcion, String fechaInicio,
-                            String diasJuego, String horariosJuego, File logoFile,
+                            String diasJuego, String horariosJuego, String formato, File logoFile,
                             Callback<Map<String, Object>> callback) {
 
         String token = "Bearer " + sessionManager.fetchAuthToken();
@@ -54,6 +54,7 @@ public class TorneoRepository {
         RequestBody rbFecha = RequestBody.create(MediaType.parse("text/plain"), fechaInicio);
         RequestBody rbDias = RequestBody.create(MediaType.parse("text/plain"), diasJuego);
         RequestBody rbHorarios = RequestBody.create(MediaType.parse("text/plain"), horariosJuego);
+        RequestBody rbFormato = RequestBody.create(MediaType.parse("text/plain"), formato);
 
         // Preparamos la imagen si existe
         MultipartBody.Part logoPart = null;
@@ -62,6 +63,6 @@ public class TorneoRepository {
             logoPart = MultipartBody.Part.createFormData("logo", logoFile.getName(), rbFile);
         }
 
-        apiService.crearTorneo(token, rbNombre, rbTipo, rbDesc, rbFecha, rbDias, rbHorarios, logoPart).enqueue(callback);
+        apiService.crearTorneo(token, rbNombre, rbTipo, rbDesc, rbFecha, rbDias, rbHorarios, rbFormato, logoPart).enqueue(callback);
     }
 }

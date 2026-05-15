@@ -165,6 +165,7 @@ public interface ApiService {
             @Part("fecha_inicio") okhttp3.RequestBody fechaInicio,
             @Part("dias_juego") okhttp3.RequestBody diasJuego,
             @Part("horarios_juego") okhttp3.RequestBody horariosJuego,
+            @Part("formato_partidos") okhttp3.RequestBody formatoPartidos,
             @Part okhttp3.MultipartBody.Part logo
     );
 

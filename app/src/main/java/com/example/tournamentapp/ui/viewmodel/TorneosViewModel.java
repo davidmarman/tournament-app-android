@@ -88,14 +88,14 @@ public class TorneosViewModel extends AndroidViewModel {
     }
 
     public void crearTorneo(String nombre, String descripcion, String fechaInicio,
-                            String diasJuego, String horariosJuego, Uri logoUri) {
+                            String diasJuego, String horariosJuego, String formato, Uri logoUri) {
         File file = null;
         if (logoUri != null) {
             file = uriToFile(logoUri);
         }
 
         // Por defecto lo crearemos de tipo "Liga"
-        torneoRepository.crearTorneo(nombre, "Liga", descripcion, fechaInicio, diasJuego, horariosJuego, file, new Callback<Map<String, Object>>() {
+        torneoRepository.crearTorneo(nombre, "Liga", descripcion, fechaInicio, diasJuego, horariosJuego, formato, file, new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                 if (response.isSuccessful() && response.body() != null) {

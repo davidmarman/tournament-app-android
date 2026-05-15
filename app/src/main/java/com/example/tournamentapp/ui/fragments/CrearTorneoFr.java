@@ -94,10 +94,24 @@ public class CrearTorneoFr extends Fragment {
         int dia = calendario.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog datePicker = new DatePickerDialog(getContext(), (view, year, month, dayOfMonth) -> {
-            // Flask espera el formato YYYY-MM-DD
-            fechaSeleccionada = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth);
-            binding.btnElegirFechaInicio.setText("Inicio: " + fechaSeleccionada);
+            // Validamos
+            Calendar fechaSelecc = Calendar.getInstance();
+            fechaSelecc.set(year,month,dayOfMonth);
+
+            Calendar hoy = Calendar.getInstance();
+            hoy.set(Calendar.HOUR_OF_DAY,0); // Solo queremos comparar el dia
+            hoy.set(Calendar.MINUTE,0);
+
+            if (fechaSelecc.before(hoy)) {
+                Toast.makeText(getContext(), "No puedes elegir una fecha pasada", Toast.LENGTH_SHORT).show();
+            } else {
+                fechaSeleccionada = String.format("%04d-%02d-%02d", year, (month + 1), dayOfMonth);
+                binding.btnElegirFechaInicio.setText("Inicio: " + fechaSeleccionada);
+            }
         }, anio, mes, dia);
+
+        // Impide físicamente clicar días pasados en el calendario
+        datePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePicker.show();
     }
 
@@ -123,15 +137,23 @@ public class CrearTorneoFr extends Fragment {
     }
 
     private void recolectarDatosYEnviar() {
+        // Validacion del nombre
         String nombre = binding.etNombreTorneo.getText().toString().trim();
         if (nombre.isEmpty()) {
             binding.etNombreTorneo.setError("El nombre es obligatorio");
             return;
         }
 
+        // Validacion de la descripcion
         String descripcion = binding.etDescripcionTorneo.getText().toString().trim();
         if (descripcion.isEmpty()) {
             descripcion = "Sin descripción"; // Por si lo dejan en blanco
+        }
+
+        // Validacion de la fecha de inicio
+        if (fechaSeleccionada.isEmpty()) {
+            Toast.makeText(getContext(), "Debes seleccionar una fecha de inicio", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // 1. Días de la semana
@@ -172,8 +194,12 @@ public class CrearTorneoFr extends Fragment {
         String horariosString = horarios.toString();
         if (horariosString.endsWith(",")) horariosString = horariosString.substring(0, horariosString.length() - 1);
 
+        // Leemos bien el formato de los partidos
+        String formato = binding.rbIdaVuelta.isChecked() ? "Ida y Vuelta" : "Ida";
+
+
         // 3. Enviamos todo al ViewModel
-        viewModel.crearTorneo(nombre, descripcion, fechaSeleccionada, diasString, horariosString, imagenUri);
+        viewModel.crearTorneo(nombre, descripcion, fechaSeleccionada, diasString, horariosString,formato, imagenUri);
     }
 
     @Override
