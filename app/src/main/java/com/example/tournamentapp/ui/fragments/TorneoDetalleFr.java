@@ -66,6 +66,7 @@ public class TorneoDetalleFr extends Fragment {
 
     private void setupObservers() {
         viewModel.getTorneoDetalle().observe(getViewLifecycleOwner(), response -> {
+            boolean torneoFinalizado = "Finalizado".equals(response.info.estado);
 
             // Dentro del observe de torneoDetalle
             if ("Finalizado".equals(response.info.estado)) {
@@ -114,11 +115,13 @@ public class TorneoDetalleFr extends Fragment {
             // 4. Partidos (Añadiendo clickeabilidad para Admin como pediste)
             binding.tvTituloJornada.setText("Jornada " + response.jornada_actual + ":");
             PartidosJornadaAdapter adapter = new PartidosJornadaAdapter(response.partidos, partido -> {
-                if ("Admin".equals(rolUsuario)) {
+                if ("Admin".equals(rolUsuario) && !torneoFinalizado) {
                     // Dentro de tu TorneoDetalleFr, al hacer clic en un partido:
                     Bundle args = new Bundle();
                     args.putInt("partidoId", partido.id_partido);
                     Navigation.findNavController(requireView()).navigate(R.id.action_torneoDetalleFr_to_actaFr, args);
+                } else if(torneoFinalizado){
+                    Toast.makeText(getContext(), "El torneo ya ha finalizado y se han repartido los premios.",Toast.LENGTH_SHORT).show();
                 }
             });
             binding.rvPartidosJornada.setAdapter(adapter);

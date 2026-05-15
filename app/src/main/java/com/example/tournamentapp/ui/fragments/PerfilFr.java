@@ -151,7 +151,12 @@ public class PerfilFr extends Fragment {
                     return true;
                 } else if (item.getItemId() == 2) {
                     new SessionManager(requireContext()).logout();
-                    Navigation.findNavController(v).navigate(R.id.action_global_loginFr);
+                    Navigation.findNavController(requireView()).navigate(
+                            R.id.action_global_loginFr,
+                            null,
+                            new androidx.navigation.NavOptions.Builder()
+                                    .setPopUpTo(R.id.nav_graph,true)
+                                    .build());
                     return true;
                 }
                 return false;
