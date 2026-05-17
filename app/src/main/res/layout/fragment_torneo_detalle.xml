@@ -311,5 +311,62 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Líderes Estatales del Torneo:"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="#EEEEEE"
+                android:padding="10dp"
+                android:layout_marginEnd="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚽ Pichichi" android:textSize="11sp" android:textStyle="bold" android:textColor="#4CAF50"/>
+                <TextView android:id="@+id/tvTorneoPichichi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 G" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="#EEEEEE"
+                android:padding="10dp"
+                android:layout_marginHorizontal="2dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🟨 Tarjetas" android:textSize="11sp" android:textStyle="bold" android:textColor="#FFB300"/>
+                <TextView android:id="@+id/tvTorneoAmarillas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 🟨" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="#EEEEEE"
+                android:padding="10dp"
+                android:layout_marginStart="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🟥 Rojas" android:textSize="11sp" android:textStyle="bold" android:textColor="#E53935"/>
+                <TextView android:id="@+id/tvTorneoRojas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 🟥" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

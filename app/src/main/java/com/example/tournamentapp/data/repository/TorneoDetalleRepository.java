@@ -64,4 +64,9 @@ public class TorneoDetalleRepository {
         String token = "Bearer " + sessionManager.fetchAuthToken();
         apiService.eliminarAdmin(token, idTorneo, idUsuario).enqueue(callback);
     }
+
+    public void expulsarEquipo(int idTorneo, int idEquipo, Callback<Map<String, String>> callback) {
+        String token = "Bearer " + sessionManager.fetchAuthToken();
+        apiService.expulsarEquipoLiga(token, idTorneo, idEquipo).enqueue(callback);
+    }
 }

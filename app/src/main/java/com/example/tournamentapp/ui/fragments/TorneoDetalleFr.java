@@ -115,10 +115,26 @@ public class TorneoDetalleFr extends Fragment {
             this.maxJornadas = response.max_jornadas;
             this.jornadaVisible = response.jornada_actual;
 
+            binding.tvTorneoPichichi.setText(response.pichichi_torneo != null ? response.pichichi_torneo : "Ninguno");
+            binding.tvTorneoAmarillas.setText(response.amarillas_torneo != null ? response.amarillas_torneo : "Ninguno");
+            binding.tvTorneoRojas.setText(response.rojas_torneo != null ? response.rojas_torneo : "Ninguno");
+
             binding.tvContadorJornada.setText(jornadaVisible + " / " + maxJornadas);
 
             // 3. Clasificación
-            clasificacionAdapter = new ClasificacionAdapter(response.clasificacion);
+            boolean esAdmin = "Admin".equals(rolUsuario);
+            clasificacionAdapter = new ClasificacionAdapter(response.clasificacion, esAdmin, equipoAExpulsar -> {
+                // Este código se ejecuta cuando el Admin pulsa el aspa del equipo
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("¿Expulsar Equipo?")
+                        .setMessage("¿Estás seguro de que deseas expulsar a '" + equipoAExpulsar.nombre + "' del torneo?\n\nEsta acción otorgará derrotas por 3-0 en sus partidos restantes y es irreversible.")
+                        .setPositiveButton("SÍ, EXPULSAR", (dialog, which) -> {
+                            viewModel.expulsarEquipo(torneoId, equipoAExpulsar.id_equipo);
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            });
             clasificacionAdapter.setExpanded(mostrandoDetalles);
             binding.rvClasificacion.setAdapter(clasificacionAdapter);
 

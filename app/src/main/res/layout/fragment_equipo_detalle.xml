@@ -106,6 +106,61 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Líderes del Equipo:"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginBottom="32dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="#F5F5F5"
+                android:padding="8dp"
+                android:layout_marginEnd="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚽ Máx Goles" android:textSize="11sp" android:textStyle="bold" android:textColor="#4CAF50"/>
+                <TextView android:id="@+id/tvLiderGoles" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="#F5F5F5"
+                android:padding="8dp"
+                android:layout_marginHorizontal="2dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🟨 Amarillas" android:textSize="11sp" android:textStyle="bold" android:textColor="#FFB300"/>
+                <TextView android:id="@+id/tvLiderAmarillas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="#F5F5F5"
+                android:padding="8dp"
+                android:layout_marginStart="4dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🟥 Rojas" android:textSize="11sp" android:textStyle="bold" android:textColor="#E53935"/>
+                <TextView android:id="@+id/tvLiderRojas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Torneos Inscrito:"
             android:textStyle="bold"
             android:textSize="18sp"

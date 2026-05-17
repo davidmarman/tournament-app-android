@@ -69,7 +69,20 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
                 if (response.isSuccessful()) {
                     torneoEliminadoExito.postValue(true);
                 } else {
-                    errorMsg.postValue("Error al eliminar el torneo");
+                    // PARSEAR ERROR REAL DEL BACK
+                    String mensajeError = "Error al eliminar el torneo";
+                    try {
+                        if (response.errorBody() != null) {
+                            // Convertimos el errorBody a un JSON para sacar el string "error"
+                            org.json.JSONObject jsonObject = new org.json.JSONObject(response.errorBody().string());
+                            if (jsonObject.has("error")) {
+                                mensajeError = jsonObject.getString("error");
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    errorMsg.postValue(mensajeError);
                     torneoEliminadoExito.postValue(false);
                 }
             }
@@ -183,6 +196,25 @@ public class TorneoDetalleViewModel extends AndroidViewModel {
             @Override
             public void onFailure(Call<Map<String, String>> call, Throwable t) {
                 errorMsg.postValue("Fallo de conexión");
+            }
+        });
+    }
+
+    public void expulsarEquipo(int idTorneo, int idEquipo) {
+        repository.expulsarEquipo(idTorneo, idEquipo, new Callback<Map<String, String>>() {
+            @Override
+            public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    adminAccionExito.postValue(response.body().get("msg"));
+                    cargarDetalle(idTorneo); // Al recargar el detalle, la clasificación se actualiza sola sin el equipo
+                } else {
+                    errorMsg.postValue("Error al expulsar al equipo");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                errorMsg.postValue("Error de conexión");
             }
         });
     }

@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.example.tournamentapp.R;
+import com.example.tournamentapp.data.model.EquipoDetalleResponse;
 import com.example.tournamentapp.data.model.ItemSimple;
 import com.example.tournamentapp.databinding.FragmentEquipoDetalleBinding;
 import com.example.tournamentapp.ui.adapter.JugadoresAdapter;
@@ -74,10 +75,32 @@ public class EquipoDetalleFr extends Fragment {
             }
         });
 
+        viewModel.getErrorMsg().observe(getViewLifecycleOwner(), error -> {
+            if (error != null && !error.isEmpty()) {
+                Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
+            }
+        });
+
         // 2. Observar los datos del equipo
         viewModel.getEquipoData().observe(getViewLifecycleOwner(), equipo -> {
 
             binding.tvDetalleNombre.setText(equipo.nombre);
+
+            if (equipo.soy_miembro) {
+                binding.btnOpcionesEquipo.setVisibility(View.VISIBLE);
+            } else {
+                binding.btnOpcionesEquipo.setVisibility(View.GONE); // Si es un rival, ocultamos el menú completo
+            }
+
+            if (equipo.lider_goles != null) {
+                binding.tvLiderGoles.setText(equipo.lider_goles.username + "\n" + equipo.lider_goles.goles + " G");
+            }
+            if (equipo.lider_amarillas != null) {
+                binding.tvLiderAmarillas.setText(equipo.lider_amarillas.username + "\n" + equipo.lider_amarillas.amarillas + " 🟨");
+            }
+            if (equipo.lider_rojas != null) {
+                binding.tvLiderRojas.setText(equipo.lider_rojas.username + "\n" + equipo.lider_rojas.rojas + " 🟥");
+            }
 
             // Cargar Logo Equipo
             String urlLogo = "http://130.61.180.130:5000/uploads/equipos/" + equipo.logo;
@@ -163,22 +186,32 @@ public class EquipoDetalleFr extends Fragment {
             if (equipo.jugadores != null) {
                 binding.rvJugadores.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-                // Creamos EL ÚNICO adaptador
+                // Corregimos la inicialización asegurando que solo pase true si es miembro Y capitán
+                boolean esCapitanReal = equipo.soy_miembro && equipo.es_capitan;
+
                 JugadoresAdapter jugadoresAdapter = new JugadoresAdapter(
                         equipo.jugadores,
-                        equipo.es_capitan,
+                        esCapitanReal, // Inyectamos el booleano blindado
                         equipo.id_capitan,
                         new JugadoresAdapter.OnJugadorClickListener() {
                             @Override
                             public void onJugadorClick(ItemSimple jugador) {
-                                abrirOpcionesJugador(jugador.id, jugador.nombre);
+                                if (equipo.soy_miembro) {
+                                    // Si soy del equipo (compañero o capitán), abro el diálogo de opciones
+                                    abrirOpcionesJugador(jugador.id, jugador.nombre);
+                                } else {
+                                    // Si soy un rival de fuera, evitamos el diálogo y vamos DIRECTO a ver su perfil
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("userId", jugador.id);
+                                    Navigation.findNavController(requireView())
+                                            .navigate(R.id.action_global_perfilFr, bundle);
+                                }
                             }
 
                             @Override
                             public void onAnadirJugadorClick() {
                                 AnadirJugadorDialog dialog = new AnadirJugadorDialog();
                                 dialog.setListener(username -> {
-                                    // Llamamos al ViewModel para añadir al usuario
                                     viewModel.anadirJugador(equipoId, username);
                                 });
                                 dialog.show(getChildFragmentManager(), "AnadirJugador");
@@ -192,25 +225,30 @@ public class EquipoDetalleFr extends Fragment {
     }
 
     private void abrirOpcionesJugador(int idJugador, String nombreJugador) {
-        // Necesitamos saber si TU eres el capitán de este equipo
-        boolean soyCapitan = viewModel.getEquipoData().getValue() != null &&
-                viewModel.getEquipoData().getValue().es_capitan;
+        // 1. Recuperamos de forma segura el objeto completo del equipo actual
+        EquipoDetalleResponse equipoActual = viewModel.getEquipoData().getValue();
 
-        OpcionesJugadorDialog dialog = OpcionesJugadorDialog.newInstance(idJugador, nombreJugador, soyCapitan);
+        boolean soyCapitanDeEsteEquipo = false;
+
+        if (equipoActual != null) {
+            // CONDICIÓN CRUCIAL: Solo puedes tener privilegios de gestión si eres miembro Y el backend confirma que eres su capitán
+            soyCapitanDeEsteEquipo = equipoActual.soy_miembro && equipoActual.es_capitan;
+        }
+
+        // 2. Le pasamos el resultado real de "soyCapitanDeEsteEquipo" al constructor del Dialog
+        OpcionesJugadorDialog dialog = OpcionesJugadorDialog.newInstance(idJugador, nombreJugador, soyCapitanDeEsteEquipo);
 
         dialog.setListener(new OpcionesJugadorDialog.OnJugadorOpcionesListener() {
             @Override
             public void onVerPerfil(int idJugador) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("userId", idJugador);
-
                 Navigation.findNavController(requireView())
                         .navigate(R.id.action_global_perfilFr, bundle);
             }
 
             @Override
             public void onExpulsar(int idJugador, String nombreJugador) {
-                // Confirmación extra de seguridad para no expulsar por error
                 new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                         .setTitle("¿Expulsar a " + nombreJugador + "?")
                         .setMessage("No podrá volver a unirse a menos que le des el código de nuevo.")

@@ -239,4 +239,13 @@ public interface ApiService {
             @Path("id_torneo") int idTorneo,
             @Path("id_usuario") int idUsuario
     );
+
+
+    // Ruta para expulsar a un equipo de un torneo
+    @DELETE("torneos/{id_torneo}/expulsar-equipo/{id_equipo}")
+    Call<Map<String, String>> expulsarEquipoLiga(
+            @Header("Authorization") String token,
+            @Path("id_torneo") int idTorneo,
+            @Path("id_equipo") int idEquipo
+    );
 }

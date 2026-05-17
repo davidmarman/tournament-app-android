@@ -16,8 +16,20 @@ import java.util.List;
 public class ClasificacionAdapter extends RecyclerView.Adapter<ClasificacionAdapter.ViewHolder> {
     private List<ClasificacionItem> lista;
     private boolean isExpanded = false;
+    private boolean isAdmin = false; // <-- NUEVO
+    private OnExpulsarClickListener expulsarListener; // <-- NUEVO
 
-    public ClasificacionAdapter(List<ClasificacionItem> lista) { this.lista = lista; }
+    // Interfaz para comunicar el click al fragmento
+    public interface OnExpulsarClickListener {
+        void onExpulsarClick(ClasificacionItem item);
+    }
+
+    // Constructor actualizado
+    public ClasificacionAdapter(List<ClasificacionItem> lista, boolean isAdmin, OnExpulsarClickListener listener) {
+        this.lista = lista;
+        this.isAdmin = isAdmin;
+        this.expulsarListener = listener;
+    }
 
     public void setExpanded(boolean expanded){
         this.isExpanded = expanded;
@@ -35,7 +47,6 @@ public class ClasificacionAdapter extends RecyclerView.Adapter<ClasificacionAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ClasificacionItem item = lista.get(position);
 
-        // Seteo de datos normal...
         holder.binding.tvRank.setText(String.valueOf(position + 1));
         holder.binding.tvEquipoNombre.setText(item.nombre);
         holder.binding.tvPts.setText(String.valueOf(item.pts));
@@ -46,20 +57,25 @@ public class ClasificacionAdapter extends RecyclerView.Adapter<ClasificacionAdap
         holder.binding.tvGC.setText(String.valueOf(item.gc));
         holder.binding.tvPJ.setText(String.valueOf(item.pj));
 
-        // APLICAR TOGGLE
         holder.binding.layoutDetalle.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
+        // CONFIGURACIÓN DEL BOTÓN DE EXPULSAR
+        if (isAdmin) {
+            holder.binding.btnExpulsarEquipo.setVisibility(View.VISIBLE);
+            holder.binding.btnExpulsarEquipo.setOnClickListener(v -> {
+                if (expulsarListener != null) expulsarListener.onExpulsarClick(item);
+            });
+        } else {
+            holder.binding.btnExpulsarEquipo.setVisibility(View.GONE);
+        }
 
         String url = "http://130.61.180.130:5000/uploads/equipos/" + item.logo;
         Glide.with(holder.itemView.getContext()).load(url).placeholder(android.R.drawable.ic_menu_gallery).into(holder.binding.ivEquipoLogo);
 
-        // Logica del click de los equipos
         holder.itemView.setOnClickListener(v -> {
             Bundle args = new Bundle();
-            // Usamos "equipoId" porque es lo que espera EquipoDetalleFr
             args.putInt("equipoId", item.id_equipo);
-
             try {
-                // Navegamos directamente al fragmento de destino
                 Navigation.findNavController(v).navigate(R.id.equipoDetalleFr, args);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -68,7 +84,7 @@ public class ClasificacionAdapter extends RecyclerView.Adapter<ClasificacionAdap
     }
 
     @Override
-    public int getItemCount() { return lista.size(); }
+    public int getItemCount() { return lista != null ? lista.size() : 0; }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         ItemClasificacionBinding binding;

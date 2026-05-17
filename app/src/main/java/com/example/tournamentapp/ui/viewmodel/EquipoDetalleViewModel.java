@@ -119,7 +119,20 @@ public class EquipoDetalleViewModel extends AndroidViewModel {
                     mensajeExito.postValue(response.body().get("msg"));
                     salirExit_Status.postValue(true);
                 } else {
-                    errorMsg.postValue("Error al disolver");
+                    // --- PARSEAR ERROR REAL DEL BACKEND ---
+                    String mensajeError = "Error al disolver el equipo";
+                    try {
+                        if (response.errorBody() != null) {
+                            // Leemos el JSON de error que envía Flask
+                            org.json.JSONObject jsonObject = new org.json.JSONObject(response.errorBody().string());
+                            if (jsonObject.has("error")) {
+                                mensajeError = jsonObject.getString("error");
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    errorMsg.postValue(mensajeError); // Mandamos el texto real al Fragment
                 }
             }
             @Override
