@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.tournamentapp.R;
 import com.example.tournamentapp.data.utils.SessionManager;
 import com.example.tournamentapp.databinding.FragmentTorneoDetalleBinding;
+import com.example.tournamentapp.ui.adapter.AdministradoresAdapter;
 import com.example.tournamentapp.ui.adapter.ClasificacionAdapter;
 import com.example.tournamentapp.ui.adapter.PartidosJornadaAdapter;
 import com.example.tournamentapp.ui.viewmodel.TorneoDetalleViewModel;
@@ -32,6 +33,7 @@ public class TorneoDetalleFr extends Fragment {
     private ClasificacionAdapter clasificacionAdapter;
     private int jornadaVisible = 1;
     private int maxJornadas = 1;
+    private AdministradoresAdapter adminAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,6 +64,14 @@ public class TorneoDetalleFr extends Fragment {
         configurarNavegacionJornadas();
 
         viewModel.cargarDetalle(torneoId);
+
+        if ("Admin".equals(rolUsuario)) {
+            viewModel.cargarAdministradores(torneoId);
+            binding.rvAdministradores.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+            // Al pulsar el botón "+":
+            binding.btnAgregarAdmin.setOnClickListener(v -> mostrarDialogoAnadirAdmin());
+        }
     }
 
     private void setupObservers() {
@@ -162,6 +172,27 @@ public class TorneoDetalleFr extends Fragment {
         });
 
         viewModel.getErrorMsg().observe(getViewLifecycleOwner(), error -> Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
+
+        viewModel.getAdminsTorneo().observe(getViewLifecycleOwner(), listaAdmins -> {
+            adminAdapter = new com.example.tournamentapp.ui.adapter.AdministradoresAdapter(listaAdmins, adminUser -> {
+                // Lógica al pulsar el aspa de un administrador
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Quitar Administrador")
+                        .setMessage("¿Estás seguro de que deseas retirar los permisos de administrador a " + adminUser.username + "?")
+                        .setPositiveButton("Sí, quitar", (dialog, which) -> {
+                            viewModel.eliminarAdministrador(torneoId, adminUser.id_usuario);
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+            });
+            binding.rvAdministradores.setAdapter(adminAdapter);
+        });
+
+        viewModel.getAdminAccionExito().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null) {
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupClickListeners() {
@@ -242,5 +273,31 @@ public class TorneoDetalleFr extends Fragment {
 
         // Llamamos al ViewModel pasando la jornada específica
         viewModel.cargarJornadaEspecifica(torneoId, jornadaVisible);
+    }
+
+    private void mostrarDialogoAnadirAdmin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Añadir Administrador");
+        builder.setMessage("Introduce el username del usuario que quieres añadir como co-administrador:");
+
+        final android.widget.EditText input = new android.widget.EditText(requireContext());
+        input.setHint("Ejemplo: david_backend");
+        builder.setView(input);
+
+        builder.setPositiveButton("Añadir", (dialog, which) -> {
+            String username = input.getText().toString().trim();
+            if (!username.isEmpty()) {
+                // Quitamos el @ si el usuario lo escribe por costumbre en el formulario
+                if (username.startsWith("@")) {
+                    username = username.substring(1);
+                }
+                // Llamada real al motor
+                viewModel.anadirAdministrador(torneoId, username);
+            } else {
+                Toast.makeText(getContext(), "El username no puede estar vacío", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancelar", null);
+        builder.show();
     }
 }

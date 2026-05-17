@@ -216,4 +216,27 @@ public interface ApiService {
             @Path("id") int idEquipo,
             @Body Map<String, Integer> body
     );
+
+    // Ruta para obtener la lista de administradores
+    @GET("torneos/{id}/administradores")
+    Call<List<com.example.tournamentapp.data.model.AdminUserResponse>> getAdministradores(
+            @Header("Authorization") String token,
+            @Path("id") int torneoId
+    );
+
+    // Ruta para añadir un administrador a un torneo
+    @POST("torneos/{id}/anadir-admin")
+    Call<Map<String, String>> anadirAdmin(
+            @Header("Authorization") String token,
+            @Path("id") int torneoId,
+            @Body Map<String, String> body // Enviamos {"username": "valor"}
+    );
+
+    //Ruta para eliminar un administrador de un torneo
+    @DELETE("torneos/{id_torneo}/eliminar-admin/{id_usuario}")
+    Call<Map<String, String>> eliminarAdmin(
+            @Header("Authorization") String token,
+            @Path("id_torneo") int idTorneo,
+            @Path("id_usuario") int idUsuario
+    );
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp"
+    android:layout_marginEnd="8dp">
+
+    <RelativeLayout
+        android:layout_width="64dp"
+        android:layout_height="64dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivAdminPerfil"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_report_image"
+            android:background="#E0E0E0"
+            app:shapeAppearanceOverlay="@style/CornerRounded" />
+
+        <ImageButton
+            android:id="@+id/btnQuitarAdmin"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:drawable/presence_offline"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="@color/white"
+            android:padding="4dp"
+            android:scaleType="fitCenter"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvAdminUsername"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="\@user"
+        android:textSize="11sp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"/>
+</LinearLayout>
