@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
     android:layout_marginHorizontal="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#EEEEEE">
+    app:strokeColor="?attr/colorPrimary"
+    app:cardBackgroundColor="@color/glow_card_surface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
                 android:layout_weight="1"
                 android:text="Nombre Torneo"
                 android:textSize="12sp"
-                android:textColor="#666666"
+                android:textColor="@color/glow_text_secondary"
                 android:textStyle="bold" />
 
             <TextView
@@ -38,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:text="25/10/2026 18:00"
                 android:textSize="12sp"
-                android:textColor="#0066CC"
+                android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -67,6 +68,7 @@
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:textColor="@color/glow_text_primary"
                     android:layout_marginTop="8dp"/>
             </LinearLayout>
 
@@ -77,7 +79,7 @@
                 android:text="VS"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="#888888"
+                android:textColor="@color/glow_text_secondary"
                 android:layout_marginHorizontal="16dp"/>
 
             <LinearLayout
@@ -99,6 +101,7 @@
                     android:textAlignment="center"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:textColor="@color/glow_text_primary"
                     android:layout_marginTop="8dp"/>
             </LinearLayout>
         </LinearLayout>

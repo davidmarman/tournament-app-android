@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#2C302E</color>
+    <color name="glow_background_start">#F4F6F6</color> <color name="glow_background_end">#F4F6F6</color>   <color name="glow_card_surface">#FFFFFF</color>     <color name="glow_text_primary">#2C302E</color>     <color name="glow_text_secondary">#7A827D</color>   <color name="accent_blue">#5D9CEC</color>
+    <color name="accent_blue_dark">#4A89DC</color>
+    <color name="accent_blue_glow">#255D9CEC</color> <color name="accent_cyan">#48CFAD</color>
+    <color name="accent_cyan_dark">#37BC9B</color>
+    <color name="accent_cyan_glow">#2548CFAD</color>
+
+    <color name="accent_green">#A0D468</color>
+    <color name="accent_green_dark">#8CC152</color>
+    <color name="accent_green_glow">#25A0D468</color>
 </resources>

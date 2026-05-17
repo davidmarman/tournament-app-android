@@ -1,5 +1,7 @@
 package com.example.tournamentapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -14,7 +16,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.tournamentapp.data.model.PerfilResponse;
 import com.example.tournamentapp.data.network.RetrofitClient;
 import com.example.tournamentapp.databinding.ActivityMainBinding;
-import com.example.tournamentapp.data.utils.SessionManager; // <-- ¡Añadido para leer el rol!
+import com.example.tournamentapp.data.utils.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +29,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+        );
+
+        // Cargamos el tema de la aplicacion
+        SharedPreferences prefs = getSharedPreferences("GlowAppPrefs", Context.MODE_PRIVATE);
+        String temaElegido = prefs.getString("tema_color", "BLUE"); // Por defecto Azul
+
+        switch (temaElegido) {
+            case "CYAN":
+                setTheme(R.style.Theme_TournamentApp_Cyan);
+                break;
+            case "GREEN":
+                setTheme(R.style.Theme_TournamentApp_Green);
+                break;
+            default:
+                setTheme(R.style.Theme_TournamentApp_Blue);
+                break;
+        }
+
+        // Inicializamos las vistas nativas
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -38,19 +62,16 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
 
-        // Logica de Token de session
+        // Lógica de Token de session
         String token = sessionManager.fetchAuthToken();
         if (token != null) {
-            // Intentamos pedir el perfil para ver si el token sigue vivo
             RetrofitClient.getApiService().getPerfil("Bearer " + token).enqueue(new Callback<PerfilResponse>() {
                 @Override
                 public void onResponse(Call<PerfilResponse> call, Response<PerfilResponse> response) {
                     if (!response.isSuccessful()) {
-                        // Si el servidor dice que el token no vale (401), borramos y al Login
                         sessionManager.logout();
                         navController.navigate(R.id.loginFr);
                     } else {
-                        // El token es válido, decidimos el destino según el rol
                         String rol = sessionManager.getUserRole();
                         int startDestination = "Admin".equals(rol) ? R.id.adminTorneosFr : R.id.homeFr;
 
@@ -61,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<PerfilResponse> call, Throwable t) {
-                    // Si el servidor está apagado o no hay internet, podemos dejarle entrar
-                    // a modo lectura o mostrar un error de conexión.
                     Toast.makeText(MainActivity.this, "Sin conexión con el servidor", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -78,14 +97,10 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 binding.bottomNavigation.setVisibility(View.VISIBLE);
 
-                // --- MAGIA DEL ENRUTAMIENTO POR ROLES ---
                 String rol = sessionManager.getUserRole();
-
                 if ("Admin".equals(rol)) {
-                    // Si el menú actual es el de Admin lo ocultamos
                     binding.bottomNavigation.setVisibility(View.GONE);
                 } else {
-                    // Si el menú actual NO es el de usuario normal, lo cambiamos
                     if (binding.bottomNavigation.getMenu().findItem(R.id.homeFr) == null) {
                         binding.bottomNavigation.getMenu().clear();
                         binding.bottomNavigation.inflateMenu(R.menu.bottom_nav_menu);
@@ -101,13 +116,10 @@ public class MainActivity extends AppCompatActivity {
                 int currentId = navController.getCurrentDestination() != null ?
                         navController.getCurrentDestination().getId() : 0;
 
-
                 if (currentId == R.id.homeFr || currentId == R.id.equipoFr ||
                         currentId == R.id.torneosFr ||
                         currentId == R.id.adminTorneosFr) {
-
-                    finish(); // Salimos de la aplicación de inmediato
-
+                    finish();
                 } else {
                     setEnabled(false);
                     getOnBackPressedDispatcher().onBackPressed();
@@ -115,7 +127,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    // METODO PARA CAMBIAR EL COLOR DE ÉNFASIS DESDE CUALQUIER FRAGMENTO
+    public void cambiarTemaDinamico(String nuevoTema) {
+        SharedPreferences prefs = getSharedPreferences("GlowAppPrefs", Context.MODE_PRIVATE);
+        prefs.edit().putString("tema_color", nuevoTema).apply();
+
+        // Recreamos la actividad principal para aplicar la metamorfosis estética al instante
+        recreate();
     }
 }

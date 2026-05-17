@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FAFAFA">
+    android:background="@drawable/bg_glow_screen"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,13 +14,13 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="24dp"
-        android:background="@color/white"
-        android:elevation="4dp">
+        android:background="@color/glow_card_surface">
 
         <ImageView
             android:id="@+id/ivActaLocalLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:contentDescription="Logo Local"
             android:src="@android:drawable/ic_menu_gallery"/>
 
         <TextView
@@ -29,12 +31,13 @@
             android:text="0 - 0"
             android:textSize="36sp"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/glow_text_primary"/>
 
         <ImageView
             android:id="@+id/ivActaVisitanteLogo"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:contentDescription="Logo Visitante"
             android:src="@android:drawable/ic_menu_gallery"/>
     </LinearLayout>
 
@@ -42,10 +45,10 @@
         android:id="@+id/tabLayoutActa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="#1976D2"
-        app:tabSelectedTextColor="#1976D2"
-        app:tabTextColor="#757575"
-        android:background="@color/white"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabSelectedTextColor="?attr/colorPrimary"
+        app:tabTextColor="@color/glow_text_secondary"
+        android:background="@color/glow_background_start"
         app:tabMode="fixed"
         app:tabGravity="fill"/>
 
@@ -56,16 +59,19 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingTop="8dp"
-        android:paddingBottom="80dp"/>
+        android:paddingBottom="80dp"
+        tools:listitem="@layout/item_perfil_simple" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTerminarPartido"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:layout_margin="16dp"
         android:text="TERMINAR PARTIDO"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
+        app:cornerRadius="10dp"
         app:backgroundTint="#FF9800"/>
 
 </LinearLayout>

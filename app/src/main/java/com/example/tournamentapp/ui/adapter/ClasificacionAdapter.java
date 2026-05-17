@@ -57,6 +57,20 @@ public class ClasificacionAdapter extends RecyclerView.Adapter<ClasificacionAdap
         holder.binding.tvGC.setText(String.valueOf(item.gc));
         holder.binding.tvPJ.setText(String.valueOf(item.pj));
 
+        if (item.es_mi_equipo) {
+            android.util.TypedValue typedValue = new android.util.TypedValue();
+            // REPARADO: Usamos android.R.attr.colorControlHighlight nativo (el tuyo del themes.xml)
+            if (holder.itemView.getContext().getTheme().resolveAttribute(android.R.attr.colorControlHighlight, typedValue, true)) {
+                holder.binding.getRoot().setBackgroundResource(typedValue.resourceId);
+            } else {
+                // Fallback de seguridad por si acaso: tu color azul glow por defecto
+                holder.binding.getRoot().setBackgroundResource(R.color.accent_blue_glow);
+            }
+        } else {
+            // Si no es el equipo del usuario, el fondo se queda completamente transparente
+            holder.binding.getRoot().setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        }
+
         holder.binding.layoutDetalle.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
         // CONFIGURACIÓN DEL BOTÓN DE EXPULSAR

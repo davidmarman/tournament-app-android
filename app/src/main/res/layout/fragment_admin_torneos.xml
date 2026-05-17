@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFAFA">
+    android:background="@drawable/bg_glow_screen"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +23,10 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="centerCrop"
-                android:background="#E0E0E0"
+                android:background="@color/glow_card_surface"
+                android:padding="2dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="?attr/colorPrimary"
                 app:shapeAppearanceOverlay="@style/CircleImageView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +48,7 @@
                     android:text="Cargando..."
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/glow_text_primary" />
 
                 <TextView
                     android:id="@+id/tvAdminUsername"
@@ -51,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="@admin"
                     android:textSize="16sp"
-                    android:textColor="#0066CC"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold"/>
             </LinearLayout>
 
@@ -60,7 +65,8 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_manage"
+                android:src="@drawable/ic_more_vert"
+                app:tint="@color/glow_text_primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -71,15 +77,19 @@
             android:text="Torneos Administrados"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="12dp"/>
+            android:textColor="@color/glow_text_primary"
+            android:layout_marginBottom="12dp"
+            android:letterSpacing="0.01"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAdminTorneos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="24dp" />
+            android:clipToPadding="false"
+            android:paddingHorizontal="4dp"
+            android:layout_marginBottom="24dp"
+            tools:listitem="@layout/item_torneo_grid" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,8 +97,9 @@
             android:text="Próximos Partidos (Arbitraje)"
             android:textStyle="bold"
             android:textSize="18sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="12dp"/>
+            android:textColor="@color/glow_text_primary"
+            android:layout_marginBottom="12dp"
+            android:letterSpacing="0.01"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAdminPartidos"
@@ -96,7 +107,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:nestedScrollingEnabled="false"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="24dp"
+            tools:listitem="@layout/item_partido" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

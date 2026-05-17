@@ -4,6 +4,7 @@ public class ClasificacionItem {
     public int id_equipo;
     public String nombre;
     public String logo;
+    public boolean es_mi_equipo;
     public int pts;
     public int gf;
     public int gc;

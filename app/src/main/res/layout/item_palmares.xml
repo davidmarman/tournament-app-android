@@ -10,6 +10,7 @@
         android:id="@+id/ivIconoTrofeo"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:contentDescription="Icono de logro"
         android:src="@android:drawable/btn_star_big_on" />
 
     <TextView
@@ -19,7 +20,7 @@
         android:text="Campeón"
         android:textStyle="bold"
         android:textSize="12sp"
-        android:textColor="@color/black" />
+        android:textColor="@color/glow_text_primary" />
 
     <TextView
         android:id="@+id/tvTorneoNombreLogro"
@@ -27,5 +28,6 @@
         android:layout_height="wrap_content"
         android:text="Liga Verano"
         android:textSize="10sp"
-        android:textColor="#666666" />
+        android:textColor="@color/glow_text_secondary" />
+
 </LinearLayout>

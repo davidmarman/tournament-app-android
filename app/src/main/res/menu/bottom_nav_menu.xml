@@ -10,7 +10,7 @@
         android:title="Equipo" />
     <item
         android:id="@+id/torneosFr"
-        android:icon="@drawable/ic_tournament"
+        android:icon="@drawable/ic_torneo"
         android:title="Torneos" />
     <item
         android:id="@+id/perfilFr"

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@color/white">
+    android:background="@color/glow_card_surface">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:text="Nuevo Equipo"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/glow_text_primary"
         android:layout_marginBottom="24dp" />
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -23,7 +23,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
         android:scaleType="centerCrop"
-        android:background="#EEEEEE"
+        android:background="@color/glow_background_start"
+        android:padding="2dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorPrimary"
         android:src="@android:drawable/ic_menu_camera"
         app:shapeAppearanceOverlay="@style/CornerRounded" />
 
@@ -32,12 +35,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nombre del equipo"
-        app:startIconDrawable="@android:drawable/ic_menu_myplaces">
+        app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+        app:startIconTint="?attr/colorPrimary"
+        app:hintTextColor="?attr/colorPrimary"
+        app:boxStrokeColor="?attr/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etNombreEquipo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/glow_text_primary"
             android:inputType="textCapWords" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -55,14 +62,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancelar"
-            android:textColor="#888888" />
+            android:textColor="@color/glow_text_secondary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCrear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Crear" />
+            android:text="Crear"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="8dp" />
     </LinearLayout>
 
 </LinearLayout>

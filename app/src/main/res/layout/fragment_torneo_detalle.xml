@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@drawable/bg_glow_screen"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,9 +25,12 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
+                android:background="@color/glow_card_surface"
+                android:padding="2dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="?attr/colorPrimary"
                 app:shapeAppearanceOverlay="@style/CornerRounded"
-                android:src="@android:drawable/ic_menu_gallery"
-                android:background="#E0E0E0" />
+                android:src="@android:drawable/ic_menu_gallery" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -40,7 +45,7 @@
                     android:text="Nombre Torneo"
                     android:textSize="22sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/glow_text_primary" />
 
                 <TextView
                     android:id="@+id/tvDetalleTorneoDesc"
@@ -48,10 +53,11 @@
                     android:layout_height="wrap_content"
                     android:text="Descripción del torneo..."
                     android:textSize="14sp"
-                    android:textColor="#666666"
+                    android:textColor="@color/glow_text_secondary"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/layoutAdminPanel"
             android:layout_width="match_parent"
@@ -63,9 +69,11 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E3F2FD"
-                app:strokeWidth="0dp"
+                app:cardCornerRadius="10dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorPrimary"
+                app:cardBackgroundColor="@color/glow_card_surface"
+                app:cardElevation="0dp"
                 android:layout_marginBottom="12dp">
 
                 <LinearLayout
@@ -79,14 +87,14 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_secure"
-                        app:tint="#1976D2" />
+                        app:tint="?attr/colorPrimary" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Código de Invitación:"
-                        android:textColor="#1976D2"
+                        android:textColor="@color/glow_text_secondary"
                         android:layout_marginStart="8dp"/>
 
                     <TextView
@@ -96,51 +104,52 @@
                         android:text="TRN-XXXX"
                         android:textStyle="bold"
                         android:textSize="18sp"
-                        android:textColor="#1976D2" />
+                        android:textColor="?attr/colorPrimary" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Co-Administradores del Torneo:"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/glow_text_primary"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Co-Administradores del Torneo:"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:textColor="#333333"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
 
-                <LinearLayout
+                <ImageButton
+                    android:id="@+id/btnAgregarAdmin"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/ic_input_add"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="?attr/colorPrimary"
+                    android:layout_marginEnd="8dp"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdministradores"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-
-                    <ImageButton
-                        android:id="@+id/btnAgregarAdmin"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@android:drawable/ic_input_add"
-                        android:background="@android:drawable/screen_background_light_transparent"
-                        app:tint="#1976D2"
-                        android:layout_marginEnd="8dp"/>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvAdministradores"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-                </LinearLayout>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGenerarCalendario"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="56dp"
                 android:text="GENERAR CALENDARIO DE PARTIDOS"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
                 app:icon="@android:drawable/ic_menu_today"
                 app:backgroundTint="#FF9800" />
 
@@ -148,10 +157,11 @@
                 android:id="@+id/btnFinalizarTorneo"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:text="FINALIZAR TORNEO Y ENTREGAR PREMIOS"
                 android:textColor="#4CAF50"
                 app:strokeColor="#4CAF50"
+                app:cornerRadius="10dp"
                 android:layout_marginTop="8dp"
                 app:icon="@android:drawable/ic_menu_agenda"
                 app:iconTint="#4CAF50" />
@@ -176,6 +186,7 @@
             android:layout_gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="#4CAF50"
             android:visibility="gone"
             android:layout_marginBottom="8dp" />
 
@@ -185,15 +196,17 @@
             android:text="Clasificación:"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:textColor="@color/glow_text_primary"
             android:layout_marginBottom="8dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="14dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#DDDDDD">
+            app:strokeColor="?attr/colorPrimary"
+            app:cardBackgroundColor="@color/glow_card_surface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -206,7 +219,7 @@
                     android:orientation="horizontal"
                     android:padding="12dp"
                     android:gravity="center_vertical"
-                    android:background="#EEEEEE">
+                    android:background="@color/glow_background_start">
 
                     <TextView
                         android:layout_width="0dp"
@@ -214,7 +227,8 @@
                         android:layout_weight="1"
                         android:text="Equipo"
                         android:textStyle="bold"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/glow_text_primary"/>
+
                     <ImageButton
                         android:id="@+id/btnToggleStats"
                         android:layout_width="24dp"
@@ -222,7 +236,7 @@
                         android:layout_marginStart="8dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@android:drawable/ic_menu_add"
-                        app:tint="#666666" />
+                        app:tint="@color/glow_text_primary" />
 
                     <LinearLayout
                         android:id="@+id/headerDetalle"
@@ -230,17 +244,15 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:visibility="gone">
-                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="G" android:gravity="center" android:textStyle="bold"/>
-                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="E" android:gravity="center" android:textStyle="bold"/>
-                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="P" android:gravity="center" android:textStyle="bold"/>
-                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="GF" android:gravity="center" android:textStyle="bold"/>
-                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="GC" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="G" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="E" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="P" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="GF" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
+                        <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="GC" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
                     </LinearLayout>
 
-
-                    <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="PJ" android:gravity="center" android:textStyle="bold"/>
-                    <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="Pts" android:gravity="center" android:textStyle="bold"/>
-
+                    <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="PJ" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
+                    <TextView android:layout_width="30dp" android:layout_height="wrap_content" android:text="Pts" android:textColor="@color/glow_text_primary" android:gravity="center" android:textStyle="bold"/>
 
                 </LinearLayout>
 
@@ -268,14 +280,13 @@
                 android:text="Jornada 1"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/black" />
+                android:textColor="@color/glow_text_primary" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:background="@drawable/bg_selector_jornada"
                 android:padding="4dp">
 
                 <ImageButton
@@ -284,7 +295,7 @@
                     android:layout_height="36dp"
                     android:src="@android:drawable/ic_media_previous"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="#1976D2" />
+                    app:tint="?attr/colorPrimary" />
 
                 <TextView
                     android:id="@+id/tvContadorJornada"
@@ -293,7 +304,7 @@
                     android:text="1 / 10"
                     android:layout_marginHorizontal="8dp"
                     android:textStyle="bold"
-                    android:textColor="#1976D2" />
+                    android:textColor="?attr/colorPrimary" />
 
                 <ImageButton
                     android:id="@+id/btnJornadaSiguiente"
@@ -301,7 +312,7 @@
                     android:layout_height="36dp"
                     android:src="@android:drawable/ic_media_next"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="#1976D2" />
+                    app:tint="?attr/colorPrimary" />
             </LinearLayout>
         </LinearLayout>
 
@@ -314,12 +325,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Líderes Estatales del Torneo:"
+            android:text="Líderes del Torneo:"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="12dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/glow_text_primary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -334,11 +345,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="#EEEEEE"
+                android:background="@color/glow_card_surface"
                 android:padding="10dp"
                 android:layout_marginEnd="4dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⚽ Pichichi" android:textSize="11sp" android:textStyle="bold" android:textColor="#4CAF50"/>
-                <TextView android:id="@+id/tvTorneoPichichi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 G" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+                <TextView android:id="@+id/tvTorneoPichichi" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 G" android:gravity="center" android:textSize="12sp" android:textColor="@color/glow_text_primary" android:layout_marginTop="4dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -347,11 +358,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="#EEEEEE"
+                android:background="@color/glow_card_surface"
                 android:padding="10dp"
                 android:layout_marginHorizontal="2dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🟨 Tarjetas" android:textSize="11sp" android:textStyle="bold" android:textColor="#FFB300"/>
-                <TextView android:id="@+id/tvTorneoAmarillas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 🟨" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+                <TextView android:id="@+id/tvTorneoAmarillas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 🟨" android:gravity="center" android:textSize="12sp" android:textColor="@color/glow_text_primary" android:layout_marginTop="4dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -360,11 +371,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:background="#EEEEEE"
+                android:background="@color/glow_card_surface"
                 android:padding="10dp"
                 android:layout_marginStart="4dp">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🟥 Rojas" android:textSize="11sp" android:textStyle="bold" android:textColor="#E53935"/>
-                <TextView android:id="@+id/tvTorneoRojas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 🟥" android:gravity="center" android:textSize="12sp" android:textColor="@color/black" android:layout_marginTop="4dp"/>
+                <TextView android:id="@+id/tvTorneoRojas" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-\n0 🟥" android:gravity="center" android:textSize="12sp" android:textColor="@color/glow_text_primary" android:layout_marginTop="4dp"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -140,10 +140,19 @@ public class PerfilFr extends Fragment {
 
     private void setupClickListeners() {
         binding.btnAjustes.setOnClickListener(v -> {
-            PopupMenu popup = new PopupMenu(requireContext(), v);
+            // Envolvemos el contexto para forzar que el Popup sea oscuro y use tus colores
+            android.view.ContextThemeWrapper wrapper = new android.view.ContextThemeWrapper(
+                    requireContext(),
+                    R.style.Base_Theme_TournamentApp
+            );
+
+            PopupMenu popup = new PopupMenu(wrapper, v); // Usamos el wrapper en lugar de requireContext()
 
             popup.getMenu().add(0, 1, 0, "Editar Info.");
             popup.getMenu().add(0, 2, 0, "Cerrar Sesión");
+            popup.getMenu().add(0, 3, 0, "Tema: Azul Glow");
+            popup.getMenu().add(0, 4, 0, "Tema: Cian Glow");
+            popup.getMenu().add(0, 5, 0, "Tema: Verde Glow");
 
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == 1) {
@@ -157,6 +166,23 @@ public class PerfilFr extends Fragment {
                             new androidx.navigation.NavOptions.Builder()
                                     .setPopUpTo(R.id.nav_graph,true)
                                     .build());
+                    return true;
+                }
+                // CONTROL DE CAMBIO DE TEMAS DESDE EL POPUP
+                else if (item.getItemId() == 3) {
+                    if (getActivity() instanceof com.example.tournamentapp.MainActivity) {
+                        ((com.example.tournamentapp.MainActivity) getActivity()).cambiarTemaDinamico("BLUE");
+                    }
+                    return true;
+                } else if (item.getItemId() == 4) {
+                    if (getActivity() instanceof com.example.tournamentapp.MainActivity) {
+                        ((com.example.tournamentapp.MainActivity) getActivity()).cambiarTemaDinamico("CYAN");
+                    }
+                    return true;
+                } else if (item.getItemId() == 5) {
+                    if (getActivity() instanceof com.example.tournamentapp.MainActivity) {
+                        ((com.example.tournamentapp.MainActivity) getActivity()).cambiarTemaDinamico("GREEN");
+                    }
                     return true;
                 }
                 return false;

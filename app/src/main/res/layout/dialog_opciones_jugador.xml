@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="@color/glow_card_surface"
     android:paddingTop="16dp"
     android:paddingBottom="24dp">
 
@@ -11,7 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
-        android:background="#D0D0D0"
+        android:background="#40FFFFFF"
         android:layout_marginBottom="16dp"/>
 
     <TextView
@@ -22,13 +23,13 @@
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/glow_text_primary"
         android:layout_marginBottom="16dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#EEEEEE"
+        android:background="#1AFFFFFF"
         android:layout_marginBottom="8dp"/>
 
     <com.google.android.material.button.MaterialButton
@@ -37,9 +38,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ver Perfil"
-        android:textColor="@color/black"
+        android:textColor="@color/glow_text_primary"
         app:icon="@android:drawable/ic_menu_info_details"
-        app:iconTint="@color/black"
+        app:iconTint="?attr/colorPrimary"
         android:gravity="start|center_vertical"
         android:paddingHorizontal="24dp"/>
 
@@ -49,9 +50,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Ceder Capitania"
-        android:textColor="@color/black"
+        android:textColor="@color/glow_text_primary"
         app:icon="@android:drawable/ic_menu_info_details"
-        app:iconTint="@color/black"
+        app:iconTint="?attr/colorPrimary"
         android:gravity="start|center_vertical"
         android:paddingHorizontal="24dp"/>
 

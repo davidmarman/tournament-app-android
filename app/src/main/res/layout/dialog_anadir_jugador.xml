@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@color/white">
+    android:background="@color/glow_card_surface">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:text="Añadir Jugador"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/glow_text_primary"
         android:layout_marginBottom="8dp" />
 
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="Introduce el nombre de usuario exacto del jugador."
         android:textSize="14sp"
-        android:textColor="#666666"
+        android:textColor="@color/glow_text_secondary"
         android:layout_marginBottom="20dp" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -29,12 +29,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Username (ej: user33)"
-        app:startIconDrawable="@android:drawable/ic_menu_search">
+        app:startIconDrawable="@android:drawable/ic_menu_search"
+        app:startIconTint="?attr/colorPrimary"
+        app:hintTextColor="?attr/colorPrimary"
+        app:boxStrokeColor="?attr/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUsernameBusqueda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/glow_text_primary"
             android:inputType="text"
             android:maxLines="1" />
 
@@ -53,14 +57,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancelar"
-            android:textColor="#888888" />
+            android:textColor="@color/glow_text_secondary" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnConfirmarAnadir"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Añadir al equipo" />
+            android:text="Añadir al equipo"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:backgroundTint="?attr/colorPrimary"
+            app:cornerRadius="8dp" />
     </LinearLayout>
 
 </LinearLayout>

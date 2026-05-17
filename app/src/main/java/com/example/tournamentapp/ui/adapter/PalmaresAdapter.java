@@ -1,5 +1,7 @@
 package com.example.tournamentapp.ui.adapter;
 
+import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,55 +32,80 @@ public class PalmaresAdapter extends RecyclerView.Adapter<PalmaresAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PalmaresItem item = lista.get(position);
 
-        holder.binding.tvTipoLogro.setText(item.tipo_logro);
         holder.binding.tvTorneoNombreLogro.setText(item.torneo_nombre + " (" + item.fecha_logro + ")");
 
-        // 2. Protegemos el switch: Si tipo_logro es nulo, le damos un valor por defecto
+        // Protegemos el switch: Si tipo_logro es nulo, le damos un valor por defecto
         String tipoLogro = (item.tipo_logro != null) ? item.tipo_logro : "Desconocido";
+
+        // --- AÑADE ESTA LÍNEA DE LOG TEMPORAL ---
+        android.util.Log.d("DEBUG_PALMARES", "El backend manda: '" + tipoLogro + "'");
+        //
+
         holder.binding.tvTipoLogro.setText(tipoLogro);
 
-        // LÓGICA DE ICONOS SEGÚN LOGRO
+        int idIconoDrawable;
+        boolean aplicarTinteTema = false;
+
+        // ASIGNACIÓN DE ICONOS SEGÚN TUS NUEVOS PNG
         switch (tipoLogro) {
             case "Campeon":
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.btn_star_big_on);
-                holder.binding.ivIconoTrofeo.setColorFilter(android.graphics.Color.parseColor("#FFD700"));
+                idIconoDrawable = R.drawable.ic_medalla_de_oro;
+                aplicarTinteTema = true; // Se tiñe con el color neón activo (azul, cian, verde)
                 break;
 
             case "Subcampeon":
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.btn_star_big_on);
-                holder.binding.ivIconoTrofeo.setColorFilter(android.graphics.Color.parseColor("#C0C0C0")); // Plata
+                idIconoDrawable = R.drawable.ic_medalla_de_plata;
+                aplicarTinteTema = true;
                 break;
 
             case "Tercero":
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.btn_star_big_on);
-                holder.binding.ivIconoTrofeo.setColorFilter(android.graphics.Color.parseColor("#CD7F32")); // Bronce
+                idIconoDrawable = R.drawable.ic_medalla_de_bronce;
+                aplicarTinteTema = true;
                 break;
 
             case "Pichichi":
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.ic_menu_myplaces);
-                holder.binding.ivIconoTrofeo.setColorFilter(null); // Sin filtro para que se vea normal
+                idIconoDrawable = R.drawable.ic_bota_de_oro;
+                aplicarTinteTema = true;
                 break;
 
-            case "Mas Amarillas":
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.ic_menu_report_image);
-                holder.binding.ivIconoTrofeo.setColorFilter(android.graphics.Color.YELLOW);
+            case "Más Amarillas":
+                idIconoDrawable = R.drawable.ic_lesion;
+                aplicarTinteTema = true;
                 break;
 
-            case "Mas Rojas":
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.ic_menu_report_image);
-                holder.binding.ivIconoTrofeo.setColorFilter(android.graphics.Color.RED);
+            case "Más Rojas":
+                idIconoDrawable = R.drawable.ic_hueso;
+                aplicarTinteTema = true;
                 break;
 
             default:
-                holder.binding.ivIconoTrofeo.setImageResource(android.R.drawable.ic_menu_gallery);
-                holder.binding.ivIconoTrofeo.setColorFilter(null);
+                idIconoDrawable = android.R.drawable.ic_menu_gallery;
+                aplicarTinteTema = false;
                 break;
+        }
+
+        // Seteamos el recurso gráfico asignado
+        holder.binding.ivIconoTrofeo.setImageResource(idIconoDrawable);
+
+        // APLICACIÓN DEL TINTE DINÁMICO SEGÚN EL TEMA ACTIVO
+        if (aplicarTinteTema) {
+            TypedValue typedValue = new TypedValue();
+            Context context = holder.itemView.getContext();
+
+            // Buscamos el colorPrimary de Material del tema actual (el que cambia en tu themes.xml)
+            if (context.getTheme().resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true)) {
+                holder.binding.ivIconoTrofeo.setColorFilter(typedValue.data, android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                holder.binding.ivIconoTrofeo.setColorFilter(null); // Fallback por si acaso
+            }
+        } else {
+            holder.binding.ivIconoTrofeo.setColorFilter(null); // Limpiamos filtro para el icono default
         }
     }
 
     @Override
     public int getItemCount() {
-        return lista.size();
+        return lista != null ? lista.size() : 0; // Añadida validación de nulidad para evitar crashes aleatorios
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

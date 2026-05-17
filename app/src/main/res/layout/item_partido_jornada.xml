@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="14dp"
     app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#EEEEEE">
+    app:strokeColor="?attr/colorPrimary"
+    app:cardBackgroundColor="@color/glow_card_surface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,14 +26,17 @@
             <ImageView
                 android:id="@+id/ivLocalLogo"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:contentDescription="Logo Local" />
             <TextView
                 android:id="@+id/tvLocalNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textAlignment="center"
-                android:text="Local"/>
+                android:textColor="@color/glow_text_primary"
+                android:text="Local"
+                android:layout_marginTop="6dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -41,6 +45,7 @@
             android:layout_marginHorizontal="16dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tvMarcador"
                 android:layout_width="wrap_content"
@@ -48,14 +53,16 @@
                 android:text="0 - 0"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/glow_text_primary"/>
+
             <TextView
                 android:id="@+id/tvEstadoPartido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pendiente"
                 android:textSize="10sp"
-                android:textColor="#999999"/>
+                android:textColor="@color/glow_text_secondary"
+                android:layout_marginTop="2dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -67,14 +74,17 @@
             <ImageView
                 android:id="@+id/ivVisitanteLogo"
                 android:layout_width="40dp"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"
+                android:contentDescription="Logo Visitante" />
             <TextView
                 android:id="@+id/tvVisitanteNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textAlignment="center"
-                android:text="Visitante"/>
+                android:textColor="@color/glow_text_primary"
+                android:text="Visitante"
+                android:layout_marginTop="6dp"/>
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
